@@ -1,0 +1,30 @@
+{
+    "name": "brix/brix-ai",
+    "description": "BRIX AI website and admin panel",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Yuga-2",
+            "email": "143182204+Yuga-2@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "anthropic-ai/sdk": "^1.3",
+        "erusev/parsedown": "^1.8",
+        "nyholm/psr7": "^1.8",
+        "smalot/pdfparser": "^2.13",
+        "symfony/http-client": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        },
+        "sort-packages": true
+    }
+}

@@ -1,0 +1,15 @@
+/vendor/
+/config/config.php
+/public/uploads/*
+!/public/uploads/.htaccess
+/storage/kb/*
+/storage/logs/*
+!/storage/kb/.gitkeep
+!/storage/logs/.gitkeep
+
+# Local environment, editor and OS files
+.env
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
