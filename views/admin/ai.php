@@ -75,6 +75,7 @@ $openrouterKey = masked_key('openrouter_api_key');
       <?= form_field('text', 'chat_welcome_title', 'Empty-chat heading', setting('chat_welcome_title')) ?>
       <?= form_field('textarea', 'chat_welcome_text', 'Empty-chat text', setting('chat_welcome_text'), ['rows' => 2]) ?>
       <?= form_field('text', 'chat_disclaimer', 'Note under the chat box', setting('chat_disclaimer')) ?>
+      <?= form_field('textarea', 'chat_answer_note', 'Note under each answer', setting('chat_answer_note'), ['rows' => 2, 'help' => 'Shown in small italics after every answer, except replies to off-topic questions. Leave empty to hide it.']) ?>
     </section>
   </div>
 

@@ -7,6 +7,7 @@ use App\Ai\DemoProvider;
 const AI_TEXT_SETTINGS = [
     'ai_assistant_name', 'openrouter_model', 'openrouter_fallback_model', 'ai_extra_instructions',
     'ai_off_topic_reply', 'ai_unavailable_reply', 'kb_synonyms', 'chat_welcome_title', 'chat_welcome_text', 'chat_disclaimer',
+    'chat_answer_note',
 ];
 
 function admin_ai_settings(): void

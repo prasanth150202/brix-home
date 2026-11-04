@@ -280,6 +280,7 @@ final class ChatService
             'message' => $messageId,
             'product' => $product ? product_payload($product) : null,
             'sources' => $sources,
+            'offTopic' => $offTopic,
         ]);
     }
 

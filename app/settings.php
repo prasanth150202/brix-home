@@ -41,6 +41,7 @@ function setting_defaults(): array
         'chat_welcome_title' => 'What do you want to grow today?',
         'chat_welcome_text'  => 'Ask about upsells, bundles, free-shipping bars, COD or your AOV. I answer from real BRIX case studies.',
         'chat_disclaimer'    => 'BRIX AI can make mistakes. Results vary by store.',
+        'chat_answer_note'   => 'These answers are based on BRIX case studies and may not be fully accurate for your store. Please check the details before acting on them.',
 
         // AI
         'ai_provider'               => 'anthropic',
