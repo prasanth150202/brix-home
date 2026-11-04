@@ -1,0 +1,20 @@
+# For hosting where the domain's document root is this project folder rather
+# than public/ (for example a Git deployment into public_html on Hostinger).
+# Every request is served from public/, so the rest of the project (app code,
+# config, vendor, database schema, README) is never reachable from the web.
+# Where the document root already points at public/, this file is not used.
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Already rewritten into public/: public/.htaccess takes it from here.
+    RewriteRule ^public/ - [L]
+
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Without mod_rewrite nothing here may be served directly.
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>

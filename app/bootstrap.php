@@ -8,7 +8,14 @@ if (PHP_VERSION_ID < 80100) {
     exit('BRIX AI needs PHP 8.1 or newer. This server runs PHP ' . PHP_VERSION . '.');
 }
 
-if (!is_file(BASE_PATH . '/config/config.php')) {
+// config/config.php is not in git. On hosting where a deployment replaces the
+// project folder, it can live one level up instead, as brix-config.php, so a
+// deploy never removes it.
+define('CONFIG_FILE', is_file(BASE_PATH . '/config/config.php')
+    ? BASE_PATH . '/config/config.php'
+    : dirname(BASE_PATH) . '/brix-config.php');
+
+if (!is_file(CONFIG_FILE)) {
     http_response_code(500);
     exit('Missing config/config.php. Run "php bin/install.php" first.');
 }

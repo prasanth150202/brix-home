@@ -4,7 +4,7 @@ declare(strict_types=1);
 function config(string $key, mixed $default = null): mixed
 {
     static $config = null;
-    $config ??= require BASE_PATH . '/config/config.php';
+    $config ??= require CONFIG_FILE;
 
     $value = $config;
     foreach (explode('.', $key) as $part) {
@@ -30,6 +30,12 @@ function base_url_path(): string
         // dirname() returns "\" for the root on Windows, so normalise its result too.
         $dir = str_replace('\\', '/', dirname(str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '')));
         $base = PHP_SAPI === 'cli' ? '' : rtrim($dir, '/.');
+        // When the project root's .htaccess rewrites requests into public/, the script
+        // runs as /public/index.php but visitors' URLs never contain /public.
+        $requested = (string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+        if (str_ends_with($base, '/public') && !str_starts_with($requested . '/', $base . '/')) {
+            $base = substr($base, 0, -strlen('/public'));
+        }
     }
     return $base;
 }
