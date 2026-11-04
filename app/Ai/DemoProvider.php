@@ -53,8 +53,6 @@ final class DemoProvider implements ChatProvider
                 $out[] = "If you'd like a tool to set this up, **{$product['name']}** can handle it.";
             }
         }
-        $out[] = '';
-        $out[] = '_Demo mode: these are raw excerpts. Add an API key in Admin → AI settings for written answers._';
         $out[] = '[[brix:app=' . ($product['slug'] ?? 'none') . ';sources=' . implode(',', range(1, count($used))) . ']]';
         return implode("\n", $out);
     }

@@ -13,3 +13,6 @@
 .idea/
 Thumbs.db
 .DS_Store
+
+# Database exports (contain admin accounts and API keys)
+/brix_ai.sql
