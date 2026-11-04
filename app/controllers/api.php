@@ -79,7 +79,7 @@ function api_track(): void
         $conversationId = db_val('SELECT id FROM chat_conversations WHERE token = ?', [$body['conversation']]);
     }
     $source = (string) ($body['source'] ?? '');
-    $allowed = ['chat', 'hero', 'header', 'pricing', 'cta', 'blog', 'page'];
+    $allowed = ['chat', 'hero', 'header', 'pricing', 'cta', 'blog', 'page', 'footer', 'apps'];
 
     db_insert('cta_clicks', [
         'product_id'      => $productId ?: null,

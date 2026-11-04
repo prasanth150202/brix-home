@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $products
+ * @var array $apps
  * @var array $heroTags
  * @var array $caseStudies
  * @var array $testimonials
@@ -13,6 +14,9 @@ $titleLast = count($titleWords) > 1 ? array_pop($titleWords) : null;
 $currency = (string) setting('currency_symbol', '$');
 $installUrl = (string) setting('install_url');
 $mark = media_url((string) setting('site_mark'));
+$stageBySlug = array_column(array_map(static fn (array $a) => ['slug' => $a['item']['slug'], 'stage' => $a['stage'] ?? ''], $apps), 'stage', 'slug');
+// The closing call to action offers each app; without app rows it falls back to the product list.
+$ctaApps = $apps ?: array_map(static fn (array $p) => ['item' => $p, 'stage' => ''], $products);
 
 $head = static function (string $prefix, string $align = 'center'): string {
     $eyebrow = (string) setting("home_{$prefix}_eyebrow", '');
@@ -29,6 +33,14 @@ $head = static function (string $prefix, string $align = 'center'): string {
     return $html . '</div>';
 };
 
+// A product's logo, or its icon when no logo is uploaded.
+$logo = static function (array $product, string $class = 'product-icon'): string {
+    $inner = $product['image']
+        ? '<img src="' . e(media_url($product['image'])) . '" alt="" width="44" height="44" loading="lazy">'
+        : icon($product['icon'] ?: 'sparkles');
+    return '<span class="' . $class . '">' . $inner . '</span>';
+};
+
 // A small upward line that draws itself in. Decoration, not data.
 $spark = static function (int $variant, string $class): string {
     $paths = [
@@ -39,20 +51,6 @@ $spark = static function (int $variant, string $class): string {
     ];
     [$d, $end] = $paths[$variant % count($paths)];
     return '<svg class="' . $class . '" viewBox="0 0 120 32" aria-hidden="true"><path pathLength="100" d="' . $d . '"/><circle cx="119" cy="' . $end . '" r="3"/></svg>';
-};
-
-// Looping illustrations for feature tiles, picked by the tile's icon.
-$visual = static function (string $icon): string {
-    $row = static fn (string $tag): string => '<div class="viz-row"><span class="viz-thumb"></span><span class="viz-lines"><i></i><i></i></span><b>' . $tag . '</b></div>';
-    return match ($icon) {
-        'cart' => '<div class="viz viz-cart" aria-hidden="true">' . $row('×1') . $row('×2') . '<div class="viz-btn">Checkout</div></div>',
-        'sparkles' => '<div class="viz viz-upsell" aria-hidden="true">' . $row('+ Add') . $row('+ Add') . '</div>',
-        'gift' => '<div class="viz viz-tiers" aria-hidden="true"><div class="viz-track"><span class="viz-fill"></span><i class="is-on" style="left:30%"></i><i class="is-on" style="left:62%"></i><i style="left:100%"></i></div><div class="viz-caption">' . icon('gift', 'icon icon-xs') . 'Free gift unlocked</div></div>',
-        'ticket' => '<div class="viz viz-coupons" aria-hidden="true"><div class="viz-coupon-track">' . str_repeat('<span class="viz-coupon">SAVE10</span><span class="viz-coupon">FREESHIP</span><span class="viz-coupon">GIFT25</span>', 4) . '</div></div>',
-        'banknote' => '<div class="viz viz-otp" aria-hidden="true"><span data-d="4"></span><span data-d="8"></span><span data-d="2"></span><span data-d="9"></span></div>',
-        'chart' => '<div class="viz viz-bars" aria-hidden="true">' . implode('', array_map(static fn (int $h) => '<span style="--h: ' . $h . '%"></span>', [28, 42, 36, 55, 48, 66, 74, 92])) . '</div>',
-        default => '',
-    };
 };
 
 // Illustrations for the first three "How it works" steps.
@@ -101,11 +99,11 @@ $stepVisual = static function (int $index) use ($mark, $spark): string {
       <?php foreach ($products as $i => $product): ?>
       <article class="product-card" data-dissolve data-tilt style="--i: <?= (int) $i ?>">
         <div class="product-top">
-          <span class="product-icon">
-            <?php if ($product['image']): ?><img src="<?= e(media_url($product['image'])) ?>" alt="" width="44" height="44"><?php else: ?><?= icon($product['icon'] ?: 'sparkles') ?><?php endif; ?>
-          </span>
+          <?= $logo($product) ?>
           <?php if ($product['metric_value']): ?>
             <span class="product-metric" title="<?= e($product['metric_label']) ?>"><?= icon('trending-up', 'icon icon-xs') ?><?= e($product['metric_value']) ?></span>
+          <?php elseif (!empty($stageBySlug[$product['slug']])): ?>
+            <a class="product-stage" href="#app-<?= e($product['slug']) ?>"><?= e($stageBySlug[$product['slug']]) ?></a>
           <?php endif; ?>
         </div>
         <h3><?= e($product['name']) ?></h3>
@@ -137,6 +135,145 @@ $stepVisual = static function (int $index) use ($mark, $spark): string {
 </section>
 <?php endif; ?>
 
+<?php if ($apps): ?>
+<div class="slab theme-light">
+  <section class="section" id="apps">
+    <div class="container">
+      <?= $head('apps') ?>
+      <ol class="journey" style="--count: <?= count($apps) ?>" data-reveal>
+        <?php foreach ($apps as $i => $app): ?>
+          <li class="journey-step reveal" style="--r: <?= (int) $i * 2 ?>">
+            <span class="journey-dot" aria-hidden="true"><?= str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) ?></span>
+            <div class="journey-card">
+              <?php if (!empty($app['stage'])): ?><p class="journey-stage"><?= e($app['stage']) ?></p><?php endif; ?>
+              <div class="journey-app">
+                <?= $logo($app['item']) ?>
+                <h3><?= e($app['item']['name']) ?></h3>
+              </div>
+              <?php if (!empty($app['problem'])): ?><p class="journey-problem"><?= e($app['problem']) ?></p><?php endif; ?>
+              <a class="link-btn journey-link" href="#app-<?= e($app['item']['slug']) ?>">See how it works<?= icon('arrow-right', 'icon icon-xs') ?></a>
+            </div>
+          </li>
+        <?php endforeach; ?>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<?php foreach ($apps as $i => $app): ?>
+<?php $item = $app['item']; $visualType = $app['visual'] ?? 'none'; ?>
+<section class="section app-show has-dots" id="app-<?= e($item['slug']) ?>">
+  <div class="container app-grid<?= $i % 2 ? ' is-flipped' : '' ?>">
+    <div class="app-copy">
+      <p class="eyebrow reveal"><?= e(implode(' · ', array_filter([str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT), $app['stage'] ?? '']))) ?></p>
+      <div class="app-brand reveal">
+        <?= $logo($item) ?>
+        <span><strong><?= e($item['name']) ?></strong><small><?= e($item['tagline']) ?></small></span>
+      </div>
+      <h2 class="app-title" data-split><?= e($app['title'] ?: $item['name']) ?></h2>
+      <?php if (!empty($app['text'])): ?><p class="lead reveal"><?= e($app['text']) ?></p><?php endif; ?>
+      <?php if ($app['points_list']): ?>
+      <ul class="app-points reveal">
+        <?php foreach ($app['points_list'] as $point): ?><li><?= icon('check', 'icon icon-xs') ?><?= e($point) ?></li><?php endforeach; ?>
+      </ul>
+      <?php endif; ?>
+      <div class="app-actions reveal">
+        <a class="btn btn-primary" href="<?= e(product_install_url($item)) ?>" target="_blank" rel="noopener" data-track="apps" data-product="<?= (int) $item['id'] ?>" data-magnetic>Install <?= e($item['name']) ?><?= icon('arrow-up-right', 'icon icon-sm icon-arrow') ?></a>
+        <button type="button" class="btn btn-ghost" data-ask="<?= e('What does ' . $item['name'] . ' do, and how would it help my store?') ?>"><?= icon('sparkles', 'icon icon-sm') ?>Ask BRIX AI</button>
+      </div>
+    </div>
+
+    <div class="app-visual reveal">
+      <?php if ($visualType === 'tryon'): ?>
+        <?php // The shopper's own photo, then the same photo wearing the jacket once the try-on finishes. ?>
+        <div class="viz-tryon" aria-hidden="true">
+          <div class="to-card">
+            <div class="to-stage">
+              <img class="to-photo to-before" src="<?= e(url('assets/img/tryon/before.webp')) ?>" alt="" width="760" height="1132" loading="lazy" decoding="async">
+              <img class="to-photo to-after" src="<?= e(url('assets/img/tryon/after.webp')) ?>" alt="" width="760" height="1132" loading="lazy" decoding="async">
+              <span class="to-scan"></span>
+              <span class="to-label to-label-before"><?= icon('upload', 'icon icon-xs') ?>Your photo</span>
+              <span class="to-label to-label-after"><?= icon('sparkles', 'icon icon-xs') ?>Try-on ready</span>
+            </div>
+            <div class="to-product">
+              <img src="<?= e(url('assets/img/tryon/jacket.webp')) ?>" alt="" width="56" height="56" loading="lazy" decoding="async">
+              <div><b>Leather Biker Jacket</b><span>Dark brown · <?= e($currency) ?>189</span></div>
+            </div>
+            <div class="to-buttons"><span class="to-try"><?= icon('eye', 'icon icon-xs') ?>Try it on</span><span class="to-add">Add to cart</span></div>
+          </div>
+          <span class="to-chip to-chip-garment"><img src="<?= e(url('assets/img/tryon/jacket.webp')) ?>" alt="" width="28" height="28" loading="lazy" decoding="async">Trying on: Leather Biker Jacket</span>
+          <span class="to-chip to-chip-lead"><?= icon('mail', 'icon icon-xs') ?>Lead captured</span>
+        </div>
+      <?php elseif ($visualType === 'convert'): ?>
+        <div class="demo-stats demo-stats-sm" aria-live="polite">
+          <div><span>Order value</span><strong data-demo-total><?= e($currency) ?>48</strong></div>
+          <div><span>Lift</span><strong class="is-up" data-demo-lift>+0%</strong></div>
+          <button type="button" class="btn btn-ghost btn-sm" data-demo-reset><?= icon('refresh', 'icon icon-sm') ?>Reset</button>
+        </div>
+        <div class="demo-cart" data-demo data-currency="<?= e($currency) ?>" data-shipping="75" data-gift="120" aria-label="Interactive cart demo">
+          <div class="dc-head"><strong>Your cart</strong><span data-demo-count>1 item</span></div>
+          <div class="dc-progress">
+            <p class="dc-msg" data-demo-msg>Add <?= e($currency) ?>27 more for free shipping</p>
+            <div class="dc-track">
+              <span class="dc-fill" data-demo-fill></span>
+              <i class="dc-mark" style="left: 62.5%" data-mark="shipping" title="Free shipping"><?= icon('truck', 'icon') ?></i>
+              <i class="dc-mark" style="left: 100%" data-mark="gift" title="Free gift"><?= icon('gift', 'icon') ?></i>
+            </div>
+          </div>
+          <ul class="dc-items" data-demo-items>
+            <li class="dc-item"><span class="dc-thumb" style="--c:#E7E5E4"></span><div><b>Hydrating Serum</b><small>30 ml</small></div><em><?= e($currency) ?>48</em></li>
+          </ul>
+          <div class="dc-suggest">
+            <p>Frequently bought together</p>
+            <div class="dc-cards">
+              <button type="button" class="dc-card" data-add="cleanser" data-name="Gentle Cleanser" data-note="150 ml" data-price="22" data-shade="#E7E5E4"><span class="dc-thumb" style="--c:#E7E5E4"></span><b>Gentle Cleanser</b><span><?= e($currency) ?>22</span><span class="dc-add">+ Add</span></button>
+              <button type="button" class="dc-card" data-add="cream" data-name="Night Cream" data-note="50 ml" data-price="34" data-shade="#D6D3D1"><span class="dc-thumb" style="--c:#D6D3D1"></span><b>Night Cream</b><span><?= e($currency) ?>34</span><span class="dc-add">+ Add</span></button>
+              <button type="button" class="dc-card" data-add="spf" data-name="Daily SPF 50" data-note="40 ml" data-price="26" data-shade="#F5F5F4"><span class="dc-thumb" style="--c:#F5F5F4"></span><b>Daily SPF 50</b><span><?= e($currency) ?>26</span><span class="dc-add">+ Add</span></button>
+            </div>
+          </div>
+          <div class="dc-foot">
+            <div><span>Subtotal</span><strong data-demo-subtotal><?= e($currency) ?>48</strong></div>
+            <span class="dc-checkout">Checkout</span>
+          </div>
+        </div>
+      <?php elseif ($visualType === 'connect'): ?>
+        <div class="viz-connect" aria-hidden="true">
+          <div class="cn-phone">
+            <div class="cn-screen">
+            <div class="cn-status">
+              <span class="cn-carrier">BRIX</span>
+              <span class="cn-island"></span>
+              <span class="cn-sys">
+                <svg viewBox="0 0 18 12" width="17" height="11"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg viewBox="0 0 16 12" width="15" height="11"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0z"/><path d="M3.4 6.8a6.5 6.5 0 0 1 9.2 0l-1.4 1.4a4.5 4.5 0 0 0-6.4 0z"/><path d="M1.2 4.6a9.6 9.6 0 0 1 13.6 0l-1.4 1.4a7.6 7.6 0 0 0-10.8 0z"/></svg>
+                <span class="cn-battery"><i></i></span>
+              </span>
+            </div>
+            <div class="cn-clock"><span>Tuesday 9 June</span><strong>9:41</strong></div>
+            <div class="cn-stack">
+              <div class="cn-note" style="--n: 0"><span class="cn-icon"><?= icon('cart', 'icon icon-sm') ?></span><div><small>Your store</small><b>You left something behind</b><p>Your Linen Overshirt is still in your cart.</p></div></div>
+              <div class="cn-note" style="--n: 1"><span class="cn-icon"><?= icon('zap', 'icon icon-sm') ?></span><div><small>Your store</small><b>Flash sale ends tonight</b><p>20% off everything until midnight.</p></div></div>
+              <div class="cn-note" style="--n: 2"><span class="cn-icon"><?= icon('sparkles', 'icon icon-sm') ?></span><div><small>Your store</small><b>New arrivals are in</b><p>The summer edit just dropped. Take a look.</p></div></div>
+            </div>
+            <div class="cn-dock">
+              <span class="cn-round"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6c0 2-2 2-2 4v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V10c0-2-2-2-2-4V2h12z"/><path d="M6 6h12"/><path d="M12 12v2"/></svg></span>
+              <span class="cn-round"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg></span>
+            </div>
+            <span class="cn-home"></span>
+            </div>
+          </div>
+          <span class="cn-optin"><b>Get updates from this store?</b><i>Allow</i></span>
+          <span class="cn-result"><?= icon('check', 'icon icon-xs') ?>Shopper came back · Order placed</span>
+        </div>
+      <?php else: ?>
+        <div class="viz-logo" aria-hidden="true"><?= $logo($item) ?></div>
+      <?php endif; ?>
+    </div>
+  </div>
+</section>
+<?php endforeach; ?>
+<?php endif; ?>
+
 <?php if (setting_on('home_stats_enabled') && ($stats = setting_rows('home_stats'))): ?>
 <section class="stats-strip" aria-label="Results from BRIX case studies">
   <div class="container stats-grid">
@@ -155,48 +292,10 @@ $stepVisual = static function (int $index) use ($mark, $spark): string {
 </section>
 <?php endif; ?>
 
-<?php if (setting_on('home_problem_enabled') || setting_on('home_how_enabled')): ?>
+<?php if (setting_on('home_how_enabled') || $caseStudies): ?>
 <div class="slab theme-light">
-  <?php if (setting_on('home_problem_enabled')): ?>
-  <section class="section" id="why-aov">
-    <div class="container split">
-      <div class="split-copy">
-        <?= $head('problem', 'left') ?>
-        <p class="lead reveal"><?= e(setting('home_problem_text')) ?></p>
-      </div>
-      <div class="compare">
-        <?php foreach (setting_rows('home_problem_cards') as $i => $card): ?>
-          <?php $growth = ($card['tone'] ?? '') === 'growth'; ?>
-          <div class="compare-card <?= $growth ? 'is-growth theme-dark' : 'is-cost' ?> reveal" style="--r: <?= (int) $i ?>">
-            <span class="compare-icon"><?= icon($growth ? 'trending-up' : 'banknote') ?></span>
-            <div>
-              <h3><?= e($card['title'] ?? '') ?></h3>
-              <p><?= e($card['text'] ?? '') ?></p>
-            </div>
-            <span class="compare-bar" aria-hidden="true"><span></span></span>
-          </div>
-        <?php endforeach; ?>
-        <figure class="aov-chart reveal" style="--r: 2">
-          <figcaption class="aov-chart-head">
-            <span class="aov-legend"><i class="lg-cost"></i>Cost to bring a shopper in</span>
-            <span class="aov-legend"><i class="lg-brix"></i>Revenue per shopper with BRIX</span>
-            <span class="aov-note">Illustration</span>
-          </figcaption>
-          <svg viewBox="0 0 400 150" aria-hidden="true">
-            <line class="aov-grid" x1="0" y1="35" x2="400" y2="35"/><line class="aov-grid" x1="0" y1="75" x2="400" y2="75"/><line class="aov-grid" x1="0" y1="115" x2="400" y2="115"/>
-            <path class="aov-cost" pathLength="100" d="M0 122 C 70 118, 130 110, 200 98 S 330 78, 400 66"/>
-            <path class="aov-brix" pathLength="100" d="M0 130 C 70 126, 120 114, 180 94 S 320 36, 400 18"/>
-            <circle class="aov-dot" cx="400" cy="18" r="5"/>
-          </svg>
-          <div class="aov-axis"><span>Before BRIX</span><span>With BRIX</span></div>
-        </figure>
-      </div>
-    </div>
-  </section>
-  <?php endif; ?>
-
   <?php if (setting_on('home_how_enabled')): ?>
-  <section class="section<?= setting_on('home_problem_enabled') ? ' section-top-tight' : '' ?>" id="how">
+  <section class="section" id="how">
     <div class="container">
       <?= $head('how') ?>
       <ol class="steps">
@@ -215,82 +314,9 @@ $stepVisual = static function (int $index) use ($mark, $spark): string {
     </div>
   </section>
   <?php endif; ?>
-</div>
-<?php endif; ?>
 
-<?php if (setting_on('home_demo_enabled')): ?>
-<section class="section has-dots" id="demo">
-  <div class="container demo">
-    <div class="demo-copy">
-      <?= $head('demo', 'left') ?>
-      <div class="demo-stats reveal" aria-live="polite">
-        <div><span>Order value</span><strong data-demo-total><?= e($currency) ?>48</strong></div>
-        <div><span>Lift</span><strong class="is-up" data-demo-lift>+0%</strong></div>
-        <div><span>Nudges</span><strong data-demo-nudges>0/4</strong></div>
-      </div>
-      <ul class="demo-checks reveal">
-        <li data-nudge="fbt">Frequently bought together</li>
-        <li data-nudge="pack">Quantity pack</li>
-        <li data-nudge="shipping">Free-shipping bar</li>
-        <li data-nudge="gift">Free gift tier</li>
-      </ul>
-      <button type="button" class="btn btn-ghost btn-sm reveal" data-demo-reset><?= icon('refresh', 'icon icon-sm') ?>Reset demo</button>
-    </div>
-
-    <div class="demo-cart reveal" data-demo data-currency="<?= e($currency) ?>" data-shipping="75" data-gift="120" aria-label="Interactive cart demo">
-      <div class="dc-head"><strong>Your cart</strong><span data-demo-count>1 item</span></div>
-      <div class="dc-progress">
-        <p class="dc-msg" data-demo-msg>Add <?= e($currency) ?>27 more for free shipping</p>
-        <div class="dc-track">
-          <span class="dc-fill" data-demo-fill></span>
-          <i class="dc-mark" style="left: 62.5%" data-mark="shipping" title="Free shipping"><?= icon('truck', 'icon') ?></i>
-          <i class="dc-mark" style="left: 100%" data-mark="gift" title="Free gift"><?= icon('gift', 'icon') ?></i>
-        </div>
-      </div>
-      <ul class="dc-items" data-demo-items>
-        <li class="dc-item"><span class="dc-thumb" style="--c:#E7E5E4"></span><div><b>Hydrating Serum</b><small>30 ml</small></div><em><?= e($currency) ?>48</em></li>
-      </ul>
-      <div class="dc-suggest">
-        <p>Frequently bought together</p>
-        <div class="dc-cards">
-          <button type="button" class="dc-card" data-add="cleanser" data-name="Gentle Cleanser" data-note="150 ml" data-price="22" data-shade="#E7E5E4"><span class="dc-thumb" style="--c:#E7E5E4"></span><b>Gentle Cleanser</b><span><?= e($currency) ?>22</span><span class="dc-add">+ Add</span></button>
-          <button type="button" class="dc-card" data-add="cream" data-name="Night Cream" data-note="50 ml" data-price="34" data-shade="#D6D3D1"><span class="dc-thumb" style="--c:#D6D3D1"></span><b>Night Cream</b><span><?= e($currency) ?>34</span><span class="dc-add">+ Add</span></button>
-          <button type="button" class="dc-card" data-add="spf" data-name="Daily SPF 50" data-note="40 ml" data-price="26" data-shade="#F5F5F4"><span class="dc-thumb" style="--c:#F5F5F4"></span><b>Daily SPF 50</b><span><?= e($currency) ?>26</span><span class="dc-add">+ Add</span></button>
-        </div>
-      </div>
-      <div class="dc-foot">
-        <div><span>Subtotal</span><strong data-demo-subtotal><?= e($currency) ?>48</strong></div>
-        <span class="dc-checkout">Checkout</span>
-      </div>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
-
-<?php if (setting_on('home_features_enabled') && ($features = setting_rows('home_features'))): ?>
-<section class="section has-dots" id="features">
-  <div class="container">
-    <?= $head('features') ?>
-    <div class="bento">
-      <?php foreach ($features as $i => $feature): ?>
-        <?php $iconName = $feature['icon'] ?? 'sparkles'; $size = $feature['size'] ?? 'normal'; ?>
-        <div class="bento-tile<?= $size === 'wide' ? ' is-wide' : ($size === 'full' ? ' is-full' : '') ?> reveal" style="--r: <?= (int) $i % 3 ?>" data-dissolve>
-          <div class="tile-head">
-            <span class="tile-icon"><?= icon($iconName) ?></span>
-            <?= $visual($iconName) ?>
-          </div>
-          <h3><?= e($feature['title'] ?? '') ?></h3>
-          <p><?= e($feature['text'] ?? '') ?></p>
-        </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
-
-<?php if ($caseStudies): ?>
-<div class="slab theme-light">
-  <section class="section" id="results">
+  <?php if ($caseStudies): ?>
+  <section class="section<?= setting_on('home_how_enabled') ? ' section-top-tight' : '' ?>" id="results">
     <div class="container">
       <?= $head('results') ?>
       <div class="case-grid">
@@ -319,6 +345,7 @@ $stepVisual = static function (int $index) use ($mark, $spark): string {
       </div>
     </div>
   </section>
+  <?php endif; ?>
 </div>
 <?php endif; ?>
 
@@ -467,9 +494,19 @@ $duration = max(36, count($testimonials) * $repeat * 9);
     <div class="cta-band reveal" data-dissolve>
       <h2 data-split><?= e(setting('home_cta_title')) ?></h2>
       <p><?= e(setting('home_cta_text')) ?></p>
+      <?php if ($ctaApps): ?>
+      <div class="cta-apps">
+        <?php foreach ($ctaApps as $app): ?>
+          <a class="cta-app" href="<?= e(product_install_url($app['item'])) ?>" target="_blank" rel="noopener" data-track="cta" data-product="<?= (int) $app['item']['id'] ?>">
+            <?= $logo($app['item']) ?>
+            <span><strong><?= e($app['item']['name']) ?></strong><?php if (!empty($app['stage'])): ?><small><?= e($app['stage']) ?></small><?php endif; ?></span>
+            <?= icon('arrow-up-right', 'icon icon-sm icon-arrow') ?>
+          </a>
+        <?php endforeach; ?>
+      </div>
+      <?php endif; ?>
       <div class="cta-actions">
-        <a class="btn btn-light" href="<?= e($installUrl) ?>" target="_blank" rel="noopener" data-track="cta" data-magnetic><?= e(setting('home_cta_button')) ?><?= icon('arrow-up-right', 'icon icon-sm icon-arrow') ?></a>
-        <button type="button" class="btn btn-outline-light" data-open-chat data-magnetic><?= icon('sparkles', 'icon icon-sm') ?>Ask BRIX AI</button>
+        <button type="button" class="btn btn-outline-light" data-open-chat data-magnetic><?= icon('sparkles', 'icon icon-sm') ?>Not sure? Ask BRIX AI which app fits</button>
       </div>
     </div>
   </div>

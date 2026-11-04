@@ -12,16 +12,17 @@ $products = active_products();
     <div class="footer-brand">
       <img src="<?= e(media_url((string) setting('site_logo'))) ?>" alt="<?= e(setting('site_name')) ?>" width="111" height="32" loading="lazy">
       <p><?= e(setting('footer_text')) ?></p>
-      <a class="badge-link" href="<?= e(setting('install_url')) ?>" target="_blank" rel="noopener" data-track="cta">
-        <img src="<?= e(url('assets/img/badge-shopify-app-store-dark.svg')) ?>" alt="Find it on the Shopify App Store" width="160" height="48" loading="lazy">
-      </a>
     </div>
     <?php if ($products): ?>
     <div>
       <h3 class="footer-title">Products</h3>
       <ul class="footer-links">
         <?php foreach ($products as $product): ?>
-          <li><a href="<?= e($product['learn_more_url'] ? url($product['learn_more_url']) : url('/#products')) ?>"><?= e($product['name']) ?></a></li>
+          <?php if ($product['learn_more_url']): ?>
+            <li><a href="<?= e(url($product['learn_more_url'])) ?>"><?= e($product['name']) ?></a></li>
+          <?php else: // Each BRIX product goes to its own Shopify App Store listing. ?>
+            <li><a href="<?= e(product_install_url($product)) ?>" target="_blank" rel="noopener" data-track="footer" data-product="<?= (int) $product['id'] ?>"><?= e($product['name']) ?></a></li>
+          <?php endif; ?>
         <?php endforeach; ?>
       </ul>
     </div>

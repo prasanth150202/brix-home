@@ -8,7 +8,7 @@ $home = $isHome ? '' : url('/');
       <img src="<?= e(media_url((string) setting('site_logo'))) ?>" alt="<?= e(setting('site_name')) ?>" width="111" height="32">
     </a>
     <nav class="nav" id="siteNav" aria-label="Main">
-      <a href="<?= e($home) ?>#products">Products</a>
+      <a href="<?= e($home) ?>#<?= setting_on('home_apps_enabled') ? 'apps' : 'products' ?>">Products</a>
       <a href="<?= e($home) ?>#results">Case studies</a>
       <a href="<?= e(url('/blog')) ?>">Blog</a>
       <?php foreach (nav_pages('header') as $navPage): ?>
@@ -18,7 +18,8 @@ $home = $isHome ? '' : url('/');
     </nav>
     <div class="header-actions">
       <a class="btn btn-ghost btn-sm hide-mobile" href="<?= e(url('/?chat=1')) ?>" data-open-chat><?= icon('sparkles', 'icon icon-sm') ?> Ask BRIX AI</a>
-      <a class="btn btn-primary btn-sm" href="<?= e(setting('install_url')) ?>" target="_blank" rel="noopener" data-track="header">Install app</a>
+      <?php // BRIX has several apps, so this opens the apps section rather than one App Store listing. ?>
+      <a class="btn btn-primary btn-sm" href="<?= e($home) ?>#<?= setting_on('home_apps_enabled') ? 'apps' : 'products' ?>">Get the apps</a>
       <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="siteNav"><?= icon('menu') ?></button>
     </div>
   </div>

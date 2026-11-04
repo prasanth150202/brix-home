@@ -128,14 +128,6 @@
       card.addEventListener('pointerleave', function () { card.style.transform = ''; });
     });
 
-    $$('.bento-tile').forEach(function (tile) {
-      tile.addEventListener('pointermove', function (e) {
-        var r = tile.getBoundingClientRect();
-        tile.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        tile.style.setProperty('--my', (e.clientY - r.top) + 'px');
-      });
-    });
-
     $$('[data-magnetic]').forEach(function (btn) {
       btn.addEventListener('pointermove', function (e) {
         var r = btn.getBoundingClientRect();

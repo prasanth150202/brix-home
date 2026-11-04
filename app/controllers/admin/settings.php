@@ -77,10 +77,11 @@ function homepage_sections(): array
             'chat_hint'        => $text('Hint under the chat box'),
             'products_title'   => $text('Heading above the product cards'),
         ]],
-        'brands' => ['title' => 'Brand logos', 'toggle' => 'home_brands_enabled', 'note' => 'The scrolling logo strip under the hero. Upload a logo in the Media library and paste its path. Use logos with a transparent background; pick "Original colours" for any logo that turns into a blank shape in white.', 'fields' => [
+        'brands' => ['title' => 'Brand logos', 'toggle' => 'home_brands_enabled', 'note' => 'The scrolling logo strip under the hero. Upload a logo in the Media library and paste its path. Use logos with a transparent background; they show in their original colours.', 'fields' => [
             'home_brands' => ['label' => 'Brands', 'type' => 'repeater', 'schema' => [
                 ['key' => 'name', 'label' => 'Brand name', 'type' => 'text'],
-                ['key' => 'logo', 'label' => 'Logo path', 'type' => 'text'],            ]],
+                ['key' => 'logo', 'label' => 'Logo path', 'type' => 'text'],
+            ]],
         ]],
         'stats' => ['title' => 'Stats strip', 'toggle' => 'home_stats_enabled', 'fields' => [
             'home_stats' => ['label' => 'Stats', 'type' => 'repeater', 'schema' => [
@@ -88,14 +89,18 @@ function homepage_sections(): array
                 ['key' => 'label', 'label' => 'Label', 'type' => 'text'],
             ]],
         ]],
-        'problem' => ['title' => 'Why AOV', 'toggle' => 'home_problem_enabled', 'fields' => [
-            'home_problem_eyebrow' => $text('Label'),
-            'home_problem_title'   => $text('Heading'),
-            'home_problem_text'    => $text('Text', 'textarea'),
-            'home_problem_cards'   => ['label' => 'Comparison cards', 'type' => 'repeater', 'schema' => [
-                ['key' => 'tone', 'label' => 'Style', 'type' => 'select', 'options' => ['cost' => 'Cost (muted)', 'growth' => 'Growth (green)']],
-                ['key' => 'title', 'label' => 'Title', 'type' => 'text'],
-                ['key' => 'text', 'label' => 'Text', 'type' => 'textarea'],
+        'apps' => ['title' => 'BRIX apps', 'toggle' => 'home_apps_enabled', 'note' => 'One row per app, in the order a shopper meets them. Each row shows as a step in the journey strip and as its own showcase further down. Install links, names and logos come from Website → Products.', 'fields' => [
+            'home_apps_eyebrow'  => $text('Label'),
+            'home_apps_title'    => $text('Heading'),
+            'home_apps_subtitle' => $text('Subheading', 'textarea'),
+            'home_apps'          => ['label' => 'Apps', 'type' => 'repeater', 'schema' => [
+                ['key' => 'product', 'label' => 'Product', 'type' => 'select', 'options' => product_options()],
+                ['key' => 'stage', 'label' => 'Journey step (e.g. "Before they buy")', 'type' => 'text'],
+                ['key' => 'problem', 'label' => 'Problem it fixes (journey strip)', 'type' => 'textarea'],
+                ['key' => 'title', 'label' => 'Showcase heading', 'type' => 'text'],
+                ['key' => 'text', 'label' => 'Showcase text', 'type' => 'textarea'],
+                ['key' => 'points', 'label' => 'Key features, one per line', 'type' => 'textarea'],
+                ['key' => 'visual', 'label' => 'Illustration', 'type' => 'select', 'options' => ['tryon' => 'Virtual try-on', 'convert' => 'Interactive cart', 'connect' => 'Push notifications', 'none' => 'None (product logo)']],
             ]],
         ]],
         'how' => ['title' => 'How BRIX AI works', 'toggle' => 'home_how_enabled', 'fields' => [
@@ -103,22 +108,6 @@ function homepage_sections(): array
             'home_how_title'    => $text('Heading'),
             'home_how_subtitle' => $text('Subheading', 'textarea'),
             'home_how_steps'    => ['label' => 'Steps', 'type' => 'repeater', 'schema' => [
-                ['key' => 'title', 'label' => 'Title', 'type' => 'text'],
-                ['key' => 'text', 'label' => 'Text', 'type' => 'textarea'],
-            ]],
-        ]],
-        'demo' => ['title' => 'Live cart demo', 'toggle' => 'home_demo_enabled', 'note' => 'An interactive mock cart: visitors add suggested items and watch the order value grow.', 'fields' => [
-            'home_demo_eyebrow'  => $text('Label'),
-            'home_demo_title'    => $text('Heading'),
-            'home_demo_subtitle' => $text('Text', 'textarea'),
-        ]],
-        'features' => ['title' => 'Feature grid', 'toggle' => 'home_features_enabled', 'fields' => [
-            'home_features_eyebrow'  => $text('Label'),
-            'home_features_title'    => $text('Heading'),
-            'home_features_subtitle' => $text('Subheading', 'textarea'),
-            'home_features'          => ['label' => 'Tiles', 'type' => 'repeater', 'schema' => [
-                ['key' => 'icon', 'label' => 'Icon', 'type' => 'select', 'options' => icon_options()],
-                ['key' => 'size', 'label' => 'Width', 'type' => 'select', 'options' => ['normal' => 'Normal', 'wide' => 'Wide (2 columns)', 'full' => 'Full width']],
                 ['key' => 'title', 'label' => 'Title', 'type' => 'text'],
                 ['key' => 'text', 'label' => 'Text', 'type' => 'textarea'],
             ]],
@@ -157,7 +146,6 @@ function homepage_sections(): array
         'cta' => ['title' => 'Closing call to action', 'toggle' => 'home_cta_enabled', 'fields' => [
             'home_cta_title'  => $text('Heading'),
             'home_cta_text'   => $text('Text', 'textarea'),
-            'home_cta_button' => $text('Button label'),
         ]],
     ];
 }

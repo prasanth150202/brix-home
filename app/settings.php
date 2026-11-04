@@ -12,7 +12,7 @@ function setting_defaults(): array
     return [
         // Site
         'site_name'        => 'BRIX',
-        'site_tagline'     => 'AI-powered AOV growth for Shopify',
+        'site_tagline'     => 'Shopify apps for bigger orders, virtual try-on and win-back',
         'site_logo'        => 'assets/img/brix-logo-light.png',
         'site_mark'        => 'assets/img/brix-mark-light.png',
         'site_favicon'     => 'assets/img/favicon.png',
@@ -23,9 +23,9 @@ function setting_defaults(): array
         'social_linkedin'  => '',
         'social_instagram' => '',
         'social_youtube'   => '',
-        'footer_text'      => 'BRIX helps Shopify brands raise average order value with carts that sell: upsells, bundles, reward tiers and COD in one app.',
-        'seo_title'        => 'BRIX AI: ask how to grow your Shopify AOV',
-        'seo_description'  => 'Ask BRIX AI how to increase average order value. Answers come from real BRIX case studies on upsells, bundles, free-shipping bars and COD.',
+        'footer_text'      => 'BRIX makes Shopify apps that grow every part of the sale: Convert for bigger orders, Try On for confident buyers and fewer returns, and Connect to bring shoppers back.',
+        'seo_title'        => 'BRIX: Shopify apps for bigger orders, virtual try-on and web push',
+        'seo_description'  => 'BRIX makes three Shopify apps: Convert for upsells, bundles and COD, Try On for AI virtual try-on, and Connect for web push that brings shoppers back. Ask BRIX AI where to start.',
         'og_image'         => 'assets/img/og-brix.png',
         'currency_symbol'  => '$',
         'head_code'        => '',
@@ -34,12 +34,12 @@ function setting_defaults(): array
         // Hero and chat
         'hero_eyebrow'       => 'Ask BRIX AI',
         'hero_title'         => 'BRIX AI',
-        'hero_subtitle'      => 'Ask how to grow your Shopify average order value. Every answer comes from real BRIX case studies.',
-        'chat_placeholder'   => 'Ask how to increase your average order value…',
+        'hero_subtitle'      => 'Ask how to grow your Shopify store: bigger orders, more confident shoppers, more of them coming back. Every answer comes from real BRIX case studies.',
+        'chat_placeholder'   => 'Ask how to grow your Shopify store…',
         'chat_hint'          => 'Answers from real BRIX case studies',
-        'products_title'     => 'Six apps. One goal: bigger carts.',
+        'products_title'     => 'Three apps. One goal: a store that grows.',
         'chat_welcome_title' => 'What do you want to grow today?',
-        'chat_welcome_text'  => 'Ask about upsells, bundles, free-shipping bars, COD or your AOV. I answer from real BRIX case studies.',
+        'chat_welcome_text'  => 'Ask about virtual try-on, upsells, bundles, free-shipping bars, COD, push notifications or your AOV. I answer from real BRIX case studies.',
         'chat_disclaimer'    => 'BRIX AI can make mistakes. Results vary by store.',
         // AI
         'ai_provider'               => 'anthropic',
@@ -57,7 +57,7 @@ function setting_defaults(): array
         'ai_max_question_chars'     => '1000',
         'ai_rate_limit_per_hour'    => '30',
         'ai_extra_instructions'     => '',
-        'ai_off_topic_reply'        => "I'm BRIX AI, so I stick to growing Shopify stores: average order value, upsells, bundles, free-shipping bars, COD and the BRIX apps. Ask me anything about those and I'll answer from real BRIX case studies.",
+        'ai_off_topic_reply'        => "I'm BRIX AI, so I stick to growing Shopify stores: virtual try-on and returns, average order value, upsells, bundles, free-shipping bars, COD, push notifications and the BRIX apps: Convert, Try On and Connect. Ask me anything about those and I'll answer from real BRIX case studies.",
         'ai_unavailable_reply'      => 'BRIX AI is taking a short break. Please try again in a minute, or email support@thebrix.io and the team will help.',
         'kb_synonyms'               => implode("\n", [
             'aov => average order value',
@@ -78,7 +78,15 @@ function setting_defaults(): array
             'order value => average order value',
             'ads => ad spend roas',
             'roas => return on ad spend',
-            'abandon => cart abandonment cart drawer',
+            'abandon => cart abandonment cart drawer brix connect web push',
+            'try on => brix try on virtual try-on',
+            'try-on => brix try on virtual try-on',
+            'returns => brix try on virtual try-on fit',
+            'model photos => brix try on ai studio on-model images',
+            'push => brix connect web push notifications',
+            'notification => brix connect web push notifications',
+            'win back => brix connect web push abandoned cart recovery',
+            'retention => brix connect repeat customers web push',
             'skincare => skincare beauty',
             'fashion => fashion apparel complete the look',
         ]),
@@ -104,13 +112,40 @@ function setting_defaults(): array
             ['value' => '47%', 'label' => 'of carts unlocked a reward, up from 19%'],
         ]),
 
-        'home_problem_enabled' => '1',
-        'home_problem_eyebrow' => 'Why AOV',
-        'home_problem_title'   => 'More traffic is expensive. Higher AOV is smarter.',
-        'home_problem_text'    => 'Most Shopify brands spend heavily on ads, influencers, emails and retargeting just to bring shoppers to the store. Then the cart, the moment a shopper has already decided to buy, is a bare list and a checkout button. BRIX turns that moment into revenue.',
-        'home_problem_cards' => $json([
-            ['tone' => 'cost', 'title' => 'New traffic', 'text' => 'Ads, influencers, emails, retargeting. The cost keeps rising.'],
-            ['tone' => 'growth', 'title' => 'Existing carts', 'text' => 'One more item per order, with no new ad spend. Mostly untapped.'],
+        // The BRIX apps, one row per app in the order a shopper meets them.
+        // Shown as the journey strip and as one showcase per app.
+        'home_apps_enabled'  => '1',
+        'home_apps_eyebrow'  => 'The BRIX apps',
+        'home_apps_title'    => 'Three apps. Three ways to grow.',
+        'home_apps_subtitle' => 'Stores lose sales in three places: carts that stay small, shoppers who are not sure, and visitors who never come back. Each BRIX app fixes one of them. Use one, or run all three together.',
+        'home_apps' => $json([
+            [
+                'product' => 'brix-convert',
+                'stage'   => 'Bigger orders',
+                'problem' => 'Shoppers add one item and check out, when the cart could have held two or three.',
+                'title'   => 'Turn one-item carts into bigger orders',
+                'text'    => 'BRIX Convert sets up cart upsells, Frequently Bought Together, bundles, quantity packs, a rewards bar and a coupon slider from one prompt. Tap the suggestions in this cart to watch an order grow.',
+                'points'  => "AI cart upsells and Frequently Bought Together\nBundles and quantity packs, no code\nRewards bar for free shipping and free gifts\nCash on Delivery button and coupon slider",
+                'visual'  => 'convert',
+            ],
+            [
+                'product' => 'brix-try-on',
+                'stage'   => 'Fewer returns',
+                'problem' => 'Shoppers can’t tell how it will look on them, so they leave, or buy and send it back.',
+                'title'   => 'Let shoppers see it on themselves before they buy',
+                'text'    => 'BRIX Try On adds AI virtual try-on to your product pages. A shopper uploads a photo, sees themselves wearing the product, and adds it to cart from the same screen.',
+                'points'  => "AI try-on button on your product pages\nOn-model photos from flat-lay or mannequin shots, no photoshoot\nEvery try-on captures an email and phone number as a lead\nAnalytics for try-ons, conversions and revenue",
+                'visual'  => 'tryon',
+            ],
+            [
+                'product' => 'brix-connect',
+                'stage'   => 'Repeat buyers',
+                'problem' => 'Most visitors leave without buying, and there is no easy way to bring them back.',
+                'title'   => 'Bring shoppers back with web push',
+                'text'    => 'BRIX Connect sends web push notifications that recover abandoned carts and announce sales and new products. Visitors subscribe in one click, with no email or phone number needed.',
+                'points'  => "One-click opt-in, no email or phone number\nAutomatic abandoned cart and checkout reminders\nFlash sales, product launches and order updates\nSegments by behaviour, device, location and cart",
+                'visual'  => 'connect',
+            ],
         ]),
 
         'home_how_enabled'  => '1',
@@ -118,9 +153,9 @@ function setting_defaults(): array
         'home_how_title'    => 'From question to playbook in seconds',
         'home_how_subtitle' => 'BRIX AI reads our library of real merchant case studies and turns them into advice for your store.',
         'home_how_steps' => $json([
-            ['title' => 'Ask in plain words', 'text' => 'Tell BRIX AI what you want to fix: small orders, single-item carts, abandoned checkouts or COD drop-offs.'],
+            ['title' => 'Ask in plain words', 'text' => 'Tell BRIX AI what you want to fix: returns, small orders, single-item carts, COD drop-offs or shoppers who never come back.'],
             ['title' => 'Get proof, not guesses', 'text' => 'Answers cite real BRIX case studies with the numbers: what the brand changed and what moved.'],
-            ['title' => 'Install and switch it on', 'text' => 'BRIX AI points you to the app that does the job. Install it from the Shopify App Store and go live without code.'],
+            ['title' => 'Install and switch it on', 'text' => 'BRIX AI points you to the BRIX app that does the job: Convert, Try On or Connect. Install it from the Shopify App Store and go live without code.'],
         ]),
 
         'home_demo_enabled'  => '1',
@@ -153,19 +188,19 @@ function setting_defaults(): array
         'home_why_enabled'  => '1',
         'home_why_eyebrow'  => 'Why BRIX',
         'home_why_title'    => 'Built for merchants, not developers',
-        'home_why_subtitle' => 'Everything is set up from settings panels with a live preview. No theme edits, no code.',
+        'home_why_subtitle' => 'Every BRIX app is set up from settings panels with a live preview. No theme edits, no code.',
         'home_why' => $json([
-            ['title' => 'No code, no theme edits', 'text' => 'Turn on the app embed and configure every feature from the BRIX admin.'],
-            ['title' => 'Preview before you publish', 'text' => 'Every change shows in a live preview, so nothing goes live by accident.'],
+            ['title' => 'No code, no theme edits', 'text' => 'Every BRIX app runs through a Shopify app embed. Turn it on and set everything up from the app’s own admin.'],
+            ['title' => 'Preview before you publish', 'text' => 'Changes show in a live preview first, so nothing goes live on your store by accident.'],
+            ['title' => 'AI that does the setup', 'text' => 'Convert builds your offers from one prompt, Try On turns flat-lay photos into on-model images, and BRIX AI tells you what to fix first.'],
+            ['title' => 'A free plan on every app', 'text' => 'Convert, Try On and Connect each start free. Paid plans are billed through Shopify, and you can cancel anytime.'],
+            ['title' => 'Apps that work together', 'text' => 'Convert grows the order, Try On builds confidence, Connect brings shoppers back. Start with one and add the others when you are ready.'],
             ['title' => 'Built for Online Store 2.0', 'text' => 'Works with modern Shopify themes through app embeds.'],
-            ['title' => 'AI that writes the first draft', 'text' => 'Brix AI drafts bundle copy, upsell rules and promotions, and you approve what ships.'],
-            ['title' => 'Start free, upgrade on results', 'text' => 'The Free plan never expires. Starter and Pro start with a 14-day trial, billed through Shopify.'],
-            ['title' => 'Support that answers', 'text' => 'Priority email support and 24/7 AI support on paid plans.'],
         ]),
 
         'home_blog_enabled' => '1',
         'home_blog_eyebrow' => 'From the blog',
-        'home_blog_title'   => 'Guides on raising Shopify AOV',
+        'home_blog_title'   => 'Guides on growing your Shopify store',
 
         'home_pricing_enabled'  => '1',
         'home_pricing_eyebrow'  => 'Pricing',
@@ -177,9 +212,8 @@ function setting_defaults(): array
         'home_faq_title'   => 'Questions merchants ask',
 
         'home_cta_enabled' => '1',
-        'home_cta_title'   => 'Ready to turn your cart into a growth engine?',
-        'home_cta_text'    => 'Install BRIX free, or ask BRIX AI what to fix first.',
-        'home_cta_button'  => 'Install BRIX free',
+        'home_cta_title'   => 'Grow every step of the sale',
+        'home_cta_text'    => 'Every BRIX app has a free plan. Install the one you need, or ask BRIX AI where your store loses the most.',
     ];
 }
 
@@ -195,6 +229,11 @@ function settings_loaded(bool $reload = false): array
             }
         } catch (PDOException) {
             // Tables not installed yet: fall back to defaults.
+            return $values;
+        }
+        // After a deploy, bring older databases up to date once (see app/upgrade.php).
+        if (content_upgrade($values)) {
+            return settings_loaded(true);
         }
     }
     return $values;

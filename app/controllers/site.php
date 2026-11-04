@@ -14,6 +14,7 @@ function site_home(): void
             'logo'     => absolute_url((string) setting('site_mark')),
         ]]),
         'products'     => active_products(),
+        'apps'         => setting_on('home_apps_enabled') ? home_apps() : [],
         'heroTags'     => hero_suggestions('hero'),
         'chatTags'     => hero_suggestions('chat'),
         'caseStudies'  => setting_on('home_results_enabled') ? featured_case_studies(6) : [],
@@ -49,7 +50,7 @@ function site_page(string $path): void
 
 function site_blog(): void
 {
-    blog_listing([], ['heading' => 'The BRIX blog', 'intro' => 'Practical guides and real case studies on raising Shopify average order value.']);
+    blog_listing([], ['heading' => 'The BRIX blog', 'intro' => 'Practical guides and real case studies on growing a Shopify store.']);
 }
 
 function site_blog_category(string $slug): void

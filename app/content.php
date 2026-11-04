@@ -185,6 +185,32 @@ function find_product_by_slug(string $slug): ?array
     return null;
 }
 
+/** Every product, active or not, as slug => name for admin dropdowns. */
+function product_options(): array
+{
+    $options = [];
+    foreach (db_all('SELECT slug, name, is_active FROM products ORDER BY sort_order, id') as $row) {
+        $options[$row['slug']] = $row['name'] . ($row['is_active'] ? '' : ' (hidden)');
+    }
+    return $options;
+}
+
+/**
+ * The homepage app rows joined to their active products, in the order the
+ * admin set. Rows whose product is missing or hidden are left out.
+ */
+function home_apps(): array
+{
+    $apps = [];
+    foreach (setting_rows('home_apps') as $row) {
+        $product = find_product_by_slug((string) ($row['product'] ?? ''));
+        if ($product) {
+            $apps[] = $row + ['points_list' => lines($row['points'] ?? ''), 'item' => $product];
+        }
+    }
+    return $apps;
+}
+
 function product_install_url(array $product): string
 {
     return $product['install_url'] ?: (string) setting('install_url');

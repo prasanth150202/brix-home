@@ -24,6 +24,7 @@ require BASE_PATH . '/vendor/autoload.php';
 require BASE_PATH . '/app/helpers.php';
 require BASE_PATH . '/app/db.php';
 require BASE_PATH . '/app/settings.php';
+require BASE_PATH . '/app/upgrade.php';
 require BASE_PATH . '/app/auth.php';
 require BASE_PATH . '/app/router.php';
 require BASE_PATH . '/app/icons.php';
