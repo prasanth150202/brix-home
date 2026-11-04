@@ -80,9 +80,7 @@ function homepage_sections(): array
         'brands' => ['title' => 'Brand logos', 'toggle' => 'home_brands_enabled', 'note' => 'The scrolling logo strip under the hero. Upload a logo in the Media library and paste its path. Use logos with a transparent background; pick "Original colours" for any logo that turns into a blank shape in white.', 'fields' => [
             'home_brands' => ['label' => 'Brands', 'type' => 'repeater', 'schema' => [
                 ['key' => 'name', 'label' => 'Brand name', 'type' => 'text'],
-                ['key' => 'logo', 'label' => 'Logo path', 'type' => 'text'],
-                ['key' => 'tone', 'label' => 'Colour', 'type' => 'select', 'options' => ['original' => 'Original colours', 'white' => 'White (matches the strip)']],
-            ]],
+                ['key' => 'logo', 'label' => 'Logo path', 'type' => 'text'],            ]],
         ]],
         'stats' => ['title' => 'Stats strip', 'toggle' => 'home_stats_enabled', 'fields' => [
             'home_stats' => ['label' => 'Stats', 'type' => 'repeater', 'schema' => [

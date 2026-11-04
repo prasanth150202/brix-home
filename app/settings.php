@@ -41,8 +41,6 @@ function setting_defaults(): array
         'chat_welcome_title' => 'What do you want to grow today?',
         'chat_welcome_text'  => 'Ask about upsells, bundles, free-shipping bars, COD or your AOV. I answer from real BRIX case studies.',
         'chat_disclaimer'    => 'BRIX AI can make mistakes. Results vary by store.',
-        'chat_answer_note'   => 'These answers are based on BRIX case studies and may not be fully accurate for your store. Please check the details before acting on them.',
-
         // AI
         'ai_provider'               => 'anthropic',
         'ai_assistant_name'         => 'BRIX AI',
@@ -88,14 +86,14 @@ function setting_defaults(): array
         // Homepage sections
         'home_brands_enabled' => '1',
         'home_brands' => $json([
-            ['name' => 'House of KO', 'logo' => 'assets/img/brands/house-of-ko.png', 'tone' => 'original'],
-            ['name' => 'Elther', 'logo' => 'assets/img/brands/elther.png', 'tone' => 'original'],
-            ['name' => 'Tru Foods', 'logo' => 'assets/img/brands/tru-foods.png', 'tone' => 'original'],
-            ['name' => 'Tirls', 'logo' => 'assets/img/brands/tirls.png', 'tone' => 'original'],
-            ['name' => 'Core Eat', 'logo' => 'assets/img/brands/core-eat.png', 'tone' => 'original'],
-            ['name' => 'Ulag Natural', 'logo' => 'assets/img/brands/ulag-natural.png', 'tone' => 'original'],
-            ['name' => 'Aadhya Herbal Care', 'logo' => 'assets/img/brands/aadhya.png', 'tone' => 'original'],
-            ['name' => 'SeedTot', 'logo' => 'assets/img/brands/seedtot.png', 'tone' => 'original'],
+            ['name' => 'House of KO', 'logo' => 'assets/img/brands/house-of-ko.png'],
+            ['name' => 'Elther', 'logo' => 'assets/img/brands/elther.png'],
+            ['name' => 'Tru Foods', 'logo' => 'assets/img/brands/tru-foods.png'],
+            ['name' => 'Tirls', 'logo' => 'assets/img/brands/tirls.png'],
+            ['name' => 'Core Eat', 'logo' => 'assets/img/brands/core-eat.png'],
+            ['name' => 'Ulag Natural', 'logo' => 'assets/img/brands/ulag-natural.png'],
+            ['name' => 'Aadhya Herbal Care', 'logo' => 'assets/img/brands/aadhya.png'],
+            ['name' => 'SeedTot', 'logo' => 'assets/img/brands/seedtot.png'],
         ]),
 
         'home_stats_enabled' => '1',

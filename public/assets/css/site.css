@@ -384,11 +384,9 @@ p { margin: 0; }
 .marquee-sep { color: var(--fg-3); }
 .marquee-sep .icon { width: 26px; height: 26px; }
 @keyframes marquee { to { transform: translateX(-50%); } }
-/* Brand logos: shown in their original colours; a brand set to "White" is flattened to one tone. */
+/* Brand logos: always shown in their original colours. */
 .marquee-logos .marquee-group { gap: 72px; padding-right: 72px; }
-.marquee-logo { height: 46px; width: auto; max-width: 170px; object-fit: contain; transition: opacity 0.3s; }
-.marquee-logo.is-white { filter: brightness(0) invert(1); opacity: 0.55; }
-.marquee-logo.is-white:hover { opacity: 1; }
+.marquee-logo { height: 46px; width: auto; max-width: 170px; object-fit: contain; }
 
 /* ---------- Sections ---------- */
 .section { position: relative; padding: 128px 0; }
@@ -833,7 +831,6 @@ a.source-card:hover { border-color: var(--line-2); transform: translateY(-2px); 
 .rec .btn-primary { background: #0A0A0A; color: #FAFAFA; }
 .rec .btn-ghost { border-color: rgba(10, 10, 10, 0.2); color: #0A0A0A; }
 
-.msg-note { margin: 14px 0 0; font-size: 13px; font-style: italic; line-height: 1.55; color: var(--fg-3); }
 .msg-actions { display: flex; gap: 6px; margin-top: 12px; }
 .icon-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 10px; font-size: 13px; color: var(--fg-3); transition: color 0.2s, background-color 0.2s; }
 .icon-btn:hover { color: var(--fg); background: var(--surface-2); }

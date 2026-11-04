@@ -739,13 +739,7 @@
         if (blocks.length) {
           extras.hidden = false;
           blocks.forEach(function (b) { extras.appendChild(b); });
-        }
-        if (cfg.answerNote && !data.offTopic) {
-          var note = el('p', 'msg-note');
-          note.textContent = cfg.answerNote;
-          $('.msg-body', node).appendChild(note);
-        }
-        var actions = el('div', 'msg-actions');
+        }        var actions = el('div', 'msg-actions');
         var copy = el('button', 'icon-btn', (icons.copy || '') + '<span>Copy</span>');
         copy.type = 'button';
         copy.addEventListener('click', function () {

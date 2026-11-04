@@ -48,9 +48,7 @@ $siteName = (string) setting('site_name');
     'trackUrl'  => url('/api/track'),
     'csrf'      => chat_token(),
     'assistant' => (string) setting('ai_assistant_name'),
-    'mark'      => media_url((string) setting('site_mark')),
-    'answerNote' => trim((string) setting('chat_answer_note')),
-    // Example questions the hero chat box types out as its placeholder.
+    'mark'      => media_url((string) setting('site_mark')),    // Example questions the hero chat box types out as its placeholder.
     'examples'  => array_values(array_map(static fn ($t) => $t['prompt'] ?: $t['label'], $heroTags ?? [])),
     'icons'     => [
         'sparkles' => icon('sparkles', 'icon icon-xs'),

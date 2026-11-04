@@ -129,7 +129,7 @@ $stepVisual = static function (int $index) use ($mark, $spark): string {
       <div class="marquee-group"<?= $copy ? ' aria-hidden="true"' : '' ?>>
         <?php // Logos run twice per group so a short list still fills wide screens. ?>
         <?php foreach (array_merge($brands, $brands) as $brand): ?>
-          <img class="marquee-logo<?= ($brand['tone'] ?? '') === 'white' ? ' is-white' : '' ?>" src="<?= e(media_url($brand['logo'])) ?>" alt="<?= $copy ? '' : e($brand['name'] ?? '') ?>" loading="lazy" decoding="async">
+          <img class="marquee-logo" src="<?= e(media_url($brand['logo'])) ?>" alt="<?= $copy ? '' : e($brand['name'] ?? '') ?>" loading="lazy" decoding="async">
         <?php endforeach; ?>
       </div>
     <?php endfor; ?>
