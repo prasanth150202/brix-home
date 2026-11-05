@@ -64,8 +64,8 @@ function admin_dashboard(): void
            FROM chat_conversations c LEFT JOIN products p ON p.id = c.recommended_product_id
           ORDER BY c.id DESC LIMIT 8'
     );
-    $provider = setting('ai_provider') === 'openrouter' ? 'openrouter' : 'anthropic';
-    $hasKey = trim((string) setting($provider . '_api_key')) !== '' || (string) getenv($provider === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY') !== '';
+    $provider = in_array(setting('ai_provider'), ['openai', 'openrouter'], true) ? (string) setting('ai_provider') : 'anthropic';
+    $hasKey = trim((string) setting($provider . '_api_key')) !== '' || (string) getenv(strtoupper($provider) . '_API_KEY') !== '';
 
     render('admin/dashboard', compact('stats', 'recommended', 'clicks', 'recent', 'provider', 'hasKey') + ['title' => 'Dashboard'], 'admin/layout');
 }

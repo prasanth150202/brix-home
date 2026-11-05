@@ -11,7 +11,7 @@ $questions = max(1, $stats['questions']);
 ?>
 <?php if (!$hasKey): ?>
   <div class="alert alert-warning">
-    <strong>BRIX AI is in demo mode.</strong> No <?= $provider === 'openrouter' ? 'OpenRouter' : 'Anthropic' ?> API key is saved, so answers are stitched together from raw excerpts.
+    <strong>BRIX AI is in demo mode.</strong> No <?= ['openai' => 'OpenAI', 'openrouter' => 'OpenRouter'][$provider] ?? 'Anthropic' ?> API key is saved, so answers are stitched together from raw excerpts.
     <?php if (is_admin_role()): ?><a href="<?= e(url('/admin/ai')) ?>">Add a key in AI settings</a>.<?php endif; ?>
   </div>
 <?php endif; ?>

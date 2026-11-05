@@ -302,7 +302,7 @@ input:disabled { background: #F6F4FA; color: var(--muted); }
 .result-text { border-top: 1px solid var(--line); }
 
 /* AI settings */
-.provider-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.provider-pick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .provider-option { position: relative; display: block; cursor: pointer; }
 .provider-option input { position: absolute; opacity: 0; }
 .provider-option span { display: grid; gap: 4px; height: 100%; padding: 16px; border-radius: 12px; border: 2px solid var(--line); transition: border-color 0.15s, background-color 0.15s; }

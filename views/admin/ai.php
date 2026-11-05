@@ -2,6 +2,7 @@
 /** @var array $errors */
 $provider = (string) field_value('ai_provider', setting('ai_provider'));
 $anthropicKey = masked_key('anthropic_api_key');
+$openaiKey = masked_key('openai_api_key');
 $openrouterKey = masked_key('openrouter_api_key');
 ?>
 <form method="post" class="form-layout">
@@ -12,8 +13,12 @@ $openrouterKey = masked_key('openrouter_api_key');
       <div class="ai-test-result" data-ai-test-result hidden></div>
       <div class="provider-pick">
         <label class="provider-option">
-          <input type="radio" name="ai_provider" value="anthropic" <?= $provider !== 'openrouter' ? 'checked' : '' ?> data-provider-switch>
+          <input type="radio" name="ai_provider" value="anthropic" <?= !in_array($provider, ['openai', 'openrouter'], true) ? 'checked' : '' ?> data-provider-switch>
           <span><strong>Claude (Anthropic)</strong><small>Best at answering only from your documents and declining off-topic questions. Billed per use by Anthropic.</small></span>
+        </label>
+        <label class="provider-option">
+          <input type="radio" name="ai_provider" value="openai" <?= $provider === 'openai' ? 'checked' : '' ?> data-provider-switch>
+          <span><strong>ChatGPT (OpenAI)</strong><small>Use your OpenAI API key with GPT models. Billed per use by OpenAI.</small></span>
         </label>
         <label class="provider-option">
           <input type="radio" name="ai_provider" value="openrouter" <?= $provider === 'openrouter' ? 'checked' : '' ?> data-provider-switch>
@@ -22,7 +27,7 @@ $openrouterKey = masked_key('openrouter_api_key');
       </div>
     </section>
 
-    <section class="card" data-provider-panel="anthropic" <?= $provider === 'openrouter' ? 'hidden' : '' ?>>
+    <section class="card" data-provider-panel="anthropic" <?= in_array($provider, ['openai', 'openrouter'], true) ? 'hidden' : '' ?>>
       <div class="card-head"><h2>Claude</h2></div>
       <?= form_field('password', 'anthropic_api_key', 'API key', '', [
           'placeholder' => $anthropicKey ?: 'sk-ant-…',
@@ -37,6 +42,20 @@ $openrouterKey = masked_key('openrouter_api_key');
         ]) ?>
       </div>
       <p class="field-help">Opus 5.5, Sonnet 5.5 and Fable 5.1 requests include Anthropic's server-side fallback: if a request is declined on policy grounds, it is retried on a fallback model instead of failing. Haiku has no fallback.</p>
+    </section>
+
+    <section class="card" data-provider-panel="openai" <?= $provider === 'openai' ? '' : 'hidden' ?>>
+      <div class="card-head"><h2>ChatGPT</h2></div>
+      <?= form_field('password', 'openai_api_key', 'API key', '', [
+          'placeholder' => $openaiKey ?: 'sk-…',
+          'help'        => ($openaiKey ? 'A key is saved. Leave this empty to keep it. ' : 'Create one at <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com</a>. ') . 'The OPENAI_API_KEY environment variable also works.',
+          'attrs'       => ['autocomplete' => 'off'],
+      ]) ?>
+      <?php if ($openaiKey): ?><?= form_field('checkbox', 'clear_openai_api_key', 'Remove the saved key', 0) ?><?php endif; ?>
+      <div class="field-row">
+        <?= form_field('text', 'openai_model', 'Model', setting('openai_model'), ['error' => $errors['openai_model'] ?? null, 'placeholder' => 'gpt-5-mini', 'help' => 'Any model id your OpenAI account can use, e.g. gpt-5-mini (fast, low cost) or gpt-5 (stronger, slower).']) ?>
+        <?= form_field('number', 'openai_temperature', 'Temperature', setting('openai_temperature'), ['attrs' => ['step' => '0.1', 'min' => '0', 'max' => '1.5'], 'help' => 'Lower is more factual. GPT-5 and o-series models ignore it.']) ?>
+      </div>
     </section>
 
     <section class="card" data-provider-panel="openrouter" <?= $provider === 'openrouter' ? '' : 'hidden' ?>>

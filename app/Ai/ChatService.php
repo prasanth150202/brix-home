@@ -134,7 +134,17 @@ final class ChatService
     {
         $maxTokens ??= max(512, (int) setting('ai_max_tokens', 4000));
 
-        if (setting('ai_provider') === 'openrouter') {
+        if (setting('ai_provider') === 'openai') {
+            $key = trim((string) setting('openai_api_key')) ?: (string) getenv('OPENAI_API_KEY');
+            if ($key !== '') {
+                return new OpenAiProvider(
+                    $key,
+                    trim((string) setting('openai_model')) ?: 'gpt-5-mini',
+                    (float) setting('openai_temperature', 0.3),
+                    $maxTokens,
+                );
+            }
+        } elseif (setting('ai_provider') === 'openrouter') {
             $key = trim((string) setting('openrouter_api_key')) ?: (string) getenv('OPENROUTER_API_KEY');
             if ($key !== '') {
                 return new OpenRouterProvider(

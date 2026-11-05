@@ -27,9 +27,10 @@ Running Composer with PHP 8.3: `"%LOCALAPPDATA%\Programs\php-8.3\php.exe" C:\Pro
 Admin → AI settings. Pick a provider and paste its key:
 
 - **Claude (Anthropic)**, through the official PHP SDK. Default model Claude Opus 5.5 at low effort, which suits chat. The system prompt is cached between visitors, and Opus/Sonnet/Fable requests carry Anthropic's server-side refusal fallback.
+- **ChatGPT (OpenAI)**, any model your OpenAI key can use. Default `gpt-5-mini`; GPT-5 and o-series models run at low reasoning effort.
 - **OpenRouter**, any model on openrouter.ai, with a fallback model.
 
-Without a key the chat runs in demo mode: it streams raw excerpts from the knowledge base so the whole flow can be tried. `ANTHROPIC_API_KEY` / `OPENROUTER_API_KEY` environment variables work too.
+Without a key the chat runs in demo mode: it streams raw excerpts from the knowledge base so the whole flow can be tried. `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / `OPENROUTER_API_KEY` environment variables work too.
 
 ## How an answer is made
 
@@ -70,7 +71,7 @@ Editors can do everything except AI settings, site settings and users.
 
 ```
 app/            PHP: helpers, routing, settings, auth, content queries
-  Ai/           chat service, providers (Anthropic, OpenRouter, demo), prompt, marker filter
+  Ai/           chat service, providers (Anthropic, OpenAI, OpenRouter, demo), prompt, marker filter
   Kb/           text extraction, chunking, retrieval
   controllers/  public site, chat API, admin
 views/          site and admin templates

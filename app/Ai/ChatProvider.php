@@ -5,7 +5,7 @@ namespace App\Ai;
 
 interface ChatProvider
 {
-    /** Short id stored with each answer: anthropic, openrouter or demo. */
+    /** Short id stored with each answer: anthropic, openai, openrouter or demo. */
     public function name(): string;
 
     /**

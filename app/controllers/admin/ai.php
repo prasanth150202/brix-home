@@ -5,7 +5,7 @@ use App\Ai\ChatService;
 use App\Ai\DemoProvider;
 
 const AI_TEXT_SETTINGS = [
-    'ai_assistant_name', 'openrouter_model', 'openrouter_fallback_model', 'ai_extra_instructions',
+    'ai_assistant_name', 'openai_model', 'openrouter_model', 'openrouter_fallback_model', 'ai_extra_instructions',
     'ai_off_topic_reply', 'ai_unavailable_reply', 'kb_synonyms', 'chat_welcome_title', 'chat_welcome_text', 'chat_disclaimer',
 ];
 
@@ -26,12 +26,13 @@ function admin_ai_settings(): void
                 $values[$key] = setting_defaults()[$key];
             }
         }
-        $values['ai_provider'] = input('ai_provider') === 'openrouter' ? 'openrouter' : 'anthropic';
+        $values['ai_provider'] = in_array(input('ai_provider'), ['openai', 'openrouter'], true) ? (string) input('ai_provider') : 'anthropic';
         $model = (string) input('anthropic_model');
         $values['anthropic_model'] = array_key_exists($model, anthropic_models()) ? $model : 'claude-opus-5-5';
         $effort = (string) input('anthropic_effort');
         $values['anthropic_effort'] = in_array($effort, ['low', 'medium', 'high'], true) ? $effort : 'low';
         $values['openrouter_temperature'] = (string) max(0, min(1.5, (float) input('openrouter_temperature', 0.3)));
+        $values['openai_temperature'] = (string) max(0, min(1.5, (float) input('openai_temperature', 0.3)));
 
         $numbers = [
             'ai_max_tokens'          => [512, 32000],
@@ -45,7 +46,7 @@ function admin_ai_settings(): void
         }
 
         // A key field left empty keeps the saved key; the remove box clears it.
-        foreach (['anthropic_api_key', 'openrouter_api_key'] as $key) {
+        foreach (['anthropic_api_key', 'openai_api_key', 'openrouter_api_key'] as $key) {
             $new = trim((string) ($_POST[$key] ?? ''));
             if (!empty($_POST['clear_' . $key])) {
                 $values[$key] = '';
@@ -56,6 +57,9 @@ function admin_ai_settings(): void
 
         if ($values['ai_off_topic_reply'] === '') {
             $errors['ai_off_topic_reply'] = 'Write the reply BRIX AI gives to off-topic questions.';
+        }
+        if ($values['ai_provider'] === 'openai' && $values['openai_model'] === '') {
+            $errors['openai_model'] = 'Enter an OpenAI model id, e.g. gpt-5-mini';
         }
         if ($values['ai_provider'] === 'openrouter' && $values['openrouter_model'] === '') {
             $errors['openrouter_model'] = 'Enter an OpenRouter model id, e.g. google/gemma-4-26b-a4b-it:free';
