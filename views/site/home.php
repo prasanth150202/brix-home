@@ -38,7 +38,7 @@ $logo = static function (array $product, string $class = 'product-icon'): string
     $inner = $product['image']
         ? '<img src="' . e(media_url($product['image'])) . '" alt="" width="44" height="44" loading="lazy">'
         : icon($product['icon'] ?: 'sparkles');
-    return '<span class="' . $class . '">' . $inner . '</span>';
+    return '<span class="' . $class . ($product['image'] ? ' is-image' : '') . '">' . $inner . '</span>';
 };
 
 // A small upward line that draws itself in. Decoration, not data.
