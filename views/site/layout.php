@@ -7,6 +7,8 @@ $siteName = (string) setting('site_name');
 ?><!doctype html>
 <html lang="en" class="no-js">
 <head>
+<!-- deploy-check 2026-11-10 -->
+<!-- deploy-check-2 force-push 2026-11-10 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title><?= e($meta['title']) ?></title>
