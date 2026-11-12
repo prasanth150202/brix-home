@@ -351,6 +351,8 @@ input:disabled { background: #F6F4FA; color: var(--muted); }
 .login-logo { height: 34px; width: auto; margin-bottom: 8px; }
 .login-card h1 { font-size: 22px; }
 .login-back { color: var(--body); text-align: center; font-size: 13.5px; margin-top: 4px; }
+.login-forgot { align-self: flex-end; font-size: 13px; color: var(--body); text-decoration: underline; }
+.login-card code { font-size: 12.5px; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1180px) {

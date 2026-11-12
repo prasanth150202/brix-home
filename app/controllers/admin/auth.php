@@ -21,7 +21,7 @@ function admin_login(): void
         }
     }
 
-    render('admin/login', ['error' => $error, 'email' => (string) input('email', ''), 'title' => 'Sign in'], null);
+    render('admin/login', ['error' => $error, 'email' => (string) input('email', ''), 'title' => 'Sign in'], 'admin/auth_layout');
 }
 
 function admin_logout(): void
@@ -68,4 +68,73 @@ function admin_dashboard(): void
     $hasKey = trim((string) setting($provider . '_api_key')) !== '' || (string) getenv(strtoupper($provider) . '_API_KEY') !== '';
 
     render('admin/dashboard', compact('stats', 'recommended', 'clicks', 'recent', 'provider', 'hasKey') + ['title' => 'Dashboard'], 'admin/layout');
+}
+
+function admin_forgot_password(): void
+{
+    if (current_admin()) {
+        redirect('/admin/account');
+    }
+
+    $error = null;
+    $sent = false;
+    $devLink = null;
+    $email = mb_strtolower(trim((string) input('email', '')));
+
+    if (is_post()) {
+        verify_csrf();
+        if (login_throttled()) {
+            $error = 'Too many attempts. Wait 15 minutes and try again.';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Enter a valid email address.';
+        } else {
+            record_password_reset_request($email);
+            $user = db_one('SELECT id, name, email, password_hash FROM users WHERE email = ?', [$email]);
+            if ($user) {
+                $link = absolute_url('/admin/reset-password?token=' . rawurlencode(password_reset_token($user)));
+                if (send_password_reset_email($user, $link)) {
+                    log_message('auth', 'Password reset email sent', ['user' => (int) $user['id']]);
+                } else {
+                    log_message('auth', 'Password reset email could not be sent (check PHP mail settings)', ['user' => (int) $user['id']]);
+                    // Only on a developer's own machine: anywhere else this would hand the link to whoever asked.
+                    if (config('app.debug') && in_array(client_ip(), ['127.0.0.1', '::1'], true)) {
+                        $devLink = $link;
+                    }
+                }
+            }
+            // Same answer whether or not the email has an account, so it cannot be used to find admins.
+            $sent = true;
+        }
+    }
+
+    render('admin/forgot_password', compact('error', 'sent', 'email', 'devLink') + ['title' => 'Reset password'], 'admin/auth_layout');
+}
+
+function admin_reset_password(): void
+{
+    header('Referrer-Policy: no-referrer');
+    $token = (string) ($_GET['token'] ?? '');
+    $user = password_reset_user($token);
+    $errors = [];
+
+    if ($user && is_post()) {
+        verify_csrf();
+        $password = (string) ($_POST['password'] ?? '');
+        if ($problem = password_problem($password)) {
+            $errors['password'] = $problem;
+        } elseif ($password !== (string) ($_POST['password_confirm'] ?? '')) {
+            $errors['password_confirm'] = 'The two passwords do not match.';
+        }
+
+        if (!$errors) {
+            db_update('users', ['password_hash' => password_hash($password, PASSWORD_DEFAULT), 'updated_at' => now()], 'id = ?', [$user['id']]);
+            db_exec('DELETE FROM login_attempts WHERE ip_hash = ?', [ip_hash()]);
+            log_message('auth', 'Password reset completed', ['user' => (int) $user['id']]);
+            logout_admin();
+            flash('success', 'Your password was changed. Sign in with the new one.');
+            redirect('/admin/login');
+        }
+    }
+
+    render('admin/reset_password', compact('user', 'token', 'errors') + ['title' => 'Choose a new password'], 'admin/auth_layout');
 }

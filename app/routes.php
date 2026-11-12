@@ -22,6 +22,8 @@ route('POST', '/api/track', 'api_track');
 
 // Admin
 route('GET|POST', '/admin/login', 'admin_login');
+route('GET|POST', '/admin/forgot-password', 'admin_forgot_password');
+route('GET|POST', '/admin/reset-password', 'admin_reset_password');
 route('POST', '/admin/logout', 'admin_logout');
 route('GET', '/admin', 'admin_dashboard');
 
