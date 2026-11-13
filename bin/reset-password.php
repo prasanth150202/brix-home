@@ -2,8 +2,8 @@
 declare(strict_types=1);
 
 /*
- * Sets a new password for an admin account, for when nobody can sign in and
- * the "Forgot password?" email does not arrive. Needs access to the server.
+ * Sets a new password for an admin account, for when nobody can sign in.
+ * Needs access to the server.
  *
  *   php bin/reset-password.php                      lists the accounts
  *   php bin/reset-password.php --email=you@x.com    sets a random password and prints it
@@ -45,7 +45,7 @@ if ($problem = password_problem($password)) {
 
 db_update('users', ['password_hash' => password_hash($password, PASSWORD_DEFAULT), 'updated_at' => now()], 'id = ?', [$user['id']]);
 // Let the account sign in straight away even if it was locked out by failed attempts.
-db_exec('DELETE FROM login_attempts WHERE email = ? OR email = ?', [$email, 'reset:' . $email]);
+db_exec('DELETE FROM login_attempts WHERE email = ?', [$email]);
 log_message('auth', 'Password reset from the command line', ['user' => (int) $user['id']]);
 
 echo "Password changed for {$user['email']}.\n";

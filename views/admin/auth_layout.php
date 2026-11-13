@@ -1,6 +1,6 @@
 <?php
 /**
- * Shell for the signed-out admin pages: sign in, forgot password, reset password.
+ * Shell for the signed-out admin page (sign in).
  *
  * @var string $title
  * @var string $content

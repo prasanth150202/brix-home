@@ -16,7 +16,6 @@
   <div class="field">
     <label for="password">Password</label>
     <input id="password" type="password" name="password" autocomplete="current-password" required>
-    <a class="login-forgot" href="<?= e(url('/admin/forgot-password')) ?>">Forgot password?</a>
   </div>
   <button class="btn btn-primary btn-block" type="submit">Sign in</button>
 </form>

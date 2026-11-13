@@ -60,10 +60,10 @@ Off-topic questions get the exact reply set in AI settings.
 
 Editors can do everything except AI settings, site settings and users.
 
-### Forgotten password
+### Sign-in email and password
 
-- **Forgot password?** on the sign-in page emails a reset link (PHP `mail()`, from `no-reply@` the domain in `app.url`). The link works once, for 1 hour. On localhost with `debug` on, where mail usually can't be sent, the link is shown on the page instead.
-- With server access: `php bin/reset-password.php` lists the accounts, and `php bin/reset-password.php --email=you@example.com [--password=...]` sets a new password (a random one is printed if you leave out `--password`).
+- **My account** (top right when signed in) changes your own sign-in email and password. Both need your current password.
+- Locked out? With server access, `php bin/reset-password.php` lists the accounts, and `php bin/reset-password.php --email=you@example.com [--password=...]` sets a new password (a random one is printed if you leave out `--password`).
 
 ## Deploying
 

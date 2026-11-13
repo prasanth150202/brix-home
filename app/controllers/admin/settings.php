@@ -314,26 +314,45 @@ function admin_account(): void
         $current = (string) ($_POST['current_password'] ?? '');
         $new = (string) ($_POST['password'] ?? '');
         $name = mb_substr((string) input('name', ''), 0, 120);
+        $email = mb_strtolower(trim((string) input('email', '')));
+        $emailChanged = $email !== $me['email'];
 
         if ($name === '') {
             $errors['name'] = 'Enter your name.';
         }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 190) {
+            $errors['email'] = 'Enter a valid email address.';
+        } elseif ($emailChanged && db_val('SELECT id FROM users WHERE email = ? AND id <> ?', [$email, $me['id']])) {
+            $errors['email'] = 'Another user already has that email.';
+        }
         if ($new !== '') {
-            if (!password_verify($current, (string) $row['password_hash'])) {
-                $errors['current_password'] = 'Your current password is not correct.';
-            } elseif ($problem = password_problem($new)) {
+            if ($problem = password_problem($new)) {
                 $errors['password'] = $problem;
             } elseif ($new !== (string) ($_POST['password_confirm'] ?? '')) {
                 $errors['password_confirm'] = 'The two new passwords do not match.';
             }
         }
+        // Changing how you sign in needs the current password, so an unattended session is not enough.
+        if (($emailChanged || $new !== '') && !password_verify($current, (string) $row['password_hash'])) {
+            $errors['current_password'] = $current === ''
+                ? 'Enter your current password to change your email or password.'
+                : 'Your current password is not correct.';
+        }
+
         if (!$errors) {
-            $data = ['name' => $name, 'updated_at' => now()];
+            $data = ['name' => $name, 'email' => $email, 'updated_at' => now()];
             if ($new !== '') {
                 $data['password_hash'] = password_hash($new, PASSWORD_DEFAULT);
             }
             db_update('users', $data, 'id = ?', [$me['id']]);
-            flash('success', $new !== '' ? 'Profile and password updated.' : 'Profile updated.');
+            if ($emailChanged || $new !== '') {
+                session_regenerate_id(true);
+                log_message('auth', 'Sign-in details changed from My account', ['user' => (int) $me['id'], 'email' => $emailChanged, 'password' => $new !== '']);
+            }
+            $changed = array_filter(['email' => $emailChanged, 'password' => $new !== '']);
+            flash('success', $changed
+                ? 'Saved. Your new ' . implode(' and ', array_keys($changed)) . (count($changed) > 1 ? ' are' : ' is') . ' active, so use ' . (count($changed) > 1 ? 'them' : 'it') . ' next time you sign in.'
+                : 'Profile updated.');
             redirect('/admin/account');
         }
     }

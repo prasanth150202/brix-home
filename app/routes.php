@@ -8,6 +8,7 @@ require BASE_PATH . '/app/controllers/admin/kb.php';
 require BASE_PATH . '/app/controllers/admin/ai.php';
 require BASE_PATH . '/app/controllers/admin/content.php';
 require BASE_PATH . '/app/controllers/admin/settings.php';
+require BASE_PATH . '/app/controllers/admin/recover.php'; // TEMPORARY: delete after use
 
 // Public site
 route('GET', '/', 'site_home');
@@ -22,8 +23,7 @@ route('POST', '/api/track', 'api_track');
 
 // Admin
 route('GET|POST', '/admin/login', 'admin_login');
-route('GET|POST', '/admin/forgot-password', 'admin_forgot_password');
-route('GET|POST', '/admin/reset-password', 'admin_reset_password');
+route('GET|POST', '/admin/recover', 'admin_recover'); // TEMPORARY: delete after use
 route('POST', '/admin/logout', 'admin_logout');
 route('GET', '/admin', 'admin_dashboard');
 
