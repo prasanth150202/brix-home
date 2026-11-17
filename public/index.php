@@ -7,6 +7,18 @@ if (PHP_SAPI === 'cli-server') {
     if ($file !== false && is_file($file) && str_starts_with($file, __DIR__) && $file !== __FILE__) {
         return false;
     }
+    // A folder with its own index.html (the /brix-scale/ landing page), as Apache serves it.
+    if ($file !== false && is_dir($file) && is_file($file . '/index.html') && str_starts_with($file, __DIR__)) {
+        $path = (string) parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if (!str_ends_with($path, '/')) {
+            $query = (string) parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+            header('Location: ' . $path . '/' . ($query !== '' ? '?' . $query : ''), true, 301);
+            return true;
+        }
+        header('Content-Type: text/html; charset=utf-8');
+        readfile($file . '/index.html');
+        return true;
+    }
 }
 
 require dirname(__DIR__) . '/app/bootstrap.php';

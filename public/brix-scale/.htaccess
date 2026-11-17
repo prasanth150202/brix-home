@@ -1,0 +1,12 @@
+# BRIX Scale landing page, served at /brix-scale/.
+# public/.htaccess only lists index.php as an index file, so name this folder's.
+DirectoryIndex index.html
+
+# public/.htaccess caches CSS and JS for a year. This page's files keep the same
+# names between edits, so keep them short-lived or visitors see the old version.
+<IfModule mod_expires.c>
+    ExpiresByType text/css "access plus 1 hour"
+    ExpiresByType application/javascript "access plus 1 hour"
+    ExpiresByType text/javascript "access plus 1 hour"
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>

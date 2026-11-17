@@ -8,6 +8,10 @@ Options -Indexes
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Folder pages need the trailing slash so their relative links (styles.css,
+    # assets/...) resolve. Apache's own slash redirect would expose /public/.
+    RewriteRule ^brix-scale$ /brix-scale/ [R=301,L]
+
     # Already rewritten into public/: public/.htaccess takes it from here.
     RewriteRule ^public/ - [L]
 
