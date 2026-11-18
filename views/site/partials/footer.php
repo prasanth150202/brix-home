@@ -10,7 +10,7 @@ $products = active_products();
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <img src="<?= e(media_url((string) setting('site_logo'))) ?>" alt="<?= e(setting('site_name')) ?>" width="111" height="32" loading="lazy">
+      <img src="<?= e(media_url((string) setting('site_logo'))) ?>" alt="<?= e(setting('site_name')) ?>" width="118" height="32" loading="lazy">
       <p><?= e(setting('footer_text')) ?></p>
     </div>
     <?php if ($products): ?>
@@ -48,7 +48,7 @@ $products = active_products();
     </div>
   </div>
   <div class="container footer-bottom">
-    <p class="footer-copy">&copy; <?= date('Y') ?> <img src="<?= e(url('assets/img/digifyce-mark.png')) ?>" alt="" width="225" height="258" loading="lazy"> Digifyce. All rights reserved.</p>
+    <p class="footer-copy">&copy; <?= date('Y') ?> <img src="<?= e(url('assets/img/digifyce-mark.png')) ?>" alt="" width="225" height="258" loading="lazy"> DIGIFYCE GLOBAL (OPC) PRIVATE LIMITED. All rights reserved.</p>
     <?php if ($socials): ?>
     <div class="socials">
       <?php foreach ($socials as $iconName => $link): ?>
