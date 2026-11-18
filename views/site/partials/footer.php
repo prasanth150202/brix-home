@@ -48,7 +48,7 @@ $products = active_products();
     </div>
   </div>
   <div class="container footer-bottom">
-    <p class="footer-copy">&copy; <?= date('Y') ?> <img src="<?= e(url('assets/img/digifyce-mark.png')) ?>" alt="Digifyce" width="225" height="258" loading="lazy">. All rights reserved.</p>
+    <p class="footer-copy">&copy; <?= date('Y') ?> <img src="<?= e(url('assets/img/digifyce-mark.png')) ?>" alt="" width="225" height="258" loading="lazy"> Digifyce. All rights reserved.</p>
     <?php if ($socials): ?>
     <div class="socials">
       <?php foreach ($socials as $iconName => $link): ?>
