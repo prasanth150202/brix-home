@@ -27,6 +27,9 @@ $nav = [
         ['/admin/categories', 'Categories & tags', 'folder', true],
         ['/admin/media', 'Media library', 'image', true],
     ],
+    'BRIX Scale page' => [
+        ['/admin/brix-scale', 'Calendly booking', 'clock', $isAdmin],
+    ],
     'Settings' => [
         ['/admin/settings', 'Site settings', 'globe', $isAdmin],
         ['/admin/users', 'Users', 'users', $isAdmin],

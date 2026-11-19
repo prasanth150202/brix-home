@@ -127,10 +127,24 @@
           <li class="agency agency--featured reveal">
             <img src="assets/agency-digifyce.png" alt="Digifyce" width="640" height="258" loading="lazy" class="agency__logo agency__logo--dg" />
           </li>
-          <li class="agency agency--chart reveal">
-            <img src="assets/growth-chart.jpg" alt="Revenue chart climbing month after month" width="720" height="531" loading="lazy" class="agency__chart" />
+          <li class="agency agency--open reveal">
+            <button type="button" data-open-form>
+              <span class="agency__avatar" aria-hidden="true">
+                <svg viewBox="0 0 64 64"><circle cx="32" cy="24" r="11"/><path d="M11 58c2.5-11.5 11-18 21-18s18.5 6.5 21 18z"/></svg>
+                <span class="agency__badge">+</span>
+              </span>
+              <strong>Your agency next?</strong>
+              <small>Book your free call &rarr;</small>
+            </button>
           </li>
         </ul>
+        <div class="section-cta reveal">
+          <button class="btn btn--accent btn--lg" data-open-form>
+            Book Now
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="section-cta__note">Join them. Free call, takes 60 seconds to apply.</p>
+        </div>
       </div>
     </section>
 
@@ -174,6 +188,13 @@
               <li>No upsell</li>
             </ul>
           </article>
+        </div>
+        <div class="section-cta reveal">
+          <button class="btn btn--accent btn--lg" data-open-form>
+            Book Now
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="section-cta__note">Free &middot; Takes 60 seconds &middot; No course, no upsell</p>
         </div>
       </div>
     </section>
@@ -221,6 +242,13 @@
             <li>Full terms before you commit</li>
             <li>1 on 1 with a real person, not a webinar</li>
           </ul>
+        </div>
+        <div class="section-cta reveal">
+          <button class="btn btn--accent btn--lg" data-open-form>
+            Book Now
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="section-cta__note">Your month one starts with one call.</p>
         </div>
       </div>
     </section>
@@ -503,9 +531,19 @@
         <p class="kicker">Details received</p>
         <h2 class="booking__title" id="bookingTitle">You're in, <span data-first-name>there</span>. Now pick a time.</h2>
         <p class="booking__sub">Choose a slot below for your free call. It's the last step.</p>
-        <div class="calendly-wrap" id="calendlyWrap">
+
+        <!-- In-page time picker (BRIX Scale only). Hidden until open times load; otherwise the Calendly calendar below is used. -->
+        <div class="slots" id="slots" hidden>
+          <p class="slots__tz" id="slotsTz"></p>
+          <div class="slots__days" id="slotsDays" role="tablist" aria-label="Choose a day"></div>
+          <div class="slots__times" id="slotsTimes" aria-label="Choose a time"></div>
+          <p class="slots__msg" id="slotsMsg" aria-live="polite"></p>
+        </div>
+
+        <div class="calendly-wrap" id="calendlyWrap" hidden>
           <div class="calendly-loading" id="calendlyLoading">Loading calendar&hellip;</div>
         </div>
+        <p class="booking__loading" id="bookingLoading">Loading open times&hellip;</p>
       </section>
 
       <!-- Step 7: Confirmation -->
@@ -514,7 +552,9 @@
           <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
         </div>
         <h2 class="booking__title" id="doneTitle">You're booked, <span data-first-name>there</span>.</h2>
+        <p class="done__when" id="doneWhen" hidden></p>
         <p class="booking__sub">Check your inbox for the calendar invite. See you on the call.</p>
+        <p class="done__links" id="doneLinks" hidden><a id="doneReschedule" href="#" target="_blank" rel="noopener">Need another time? Reschedule</a></p>
         <button class="btn btn--dark" id="doneClose">Back to the site</button>
       </section>
     </div>

@@ -560,6 +560,31 @@ function setBookingProgress(text) {
   progressLabel.textContent = text;
 }
 
+/* ---------- Booking ----------
+   1. Try the in-page time picker: open times come from /api/brix-scale/slots and a tap books the call
+      through /api/brix-scale/book (server side, Admin > BRIX Scale page > Calendly booking).
+   2. If that is switched off, not set up, or fails, show the regular Calendly calendar instead. */
+const BOOKING_API = new URL("../api/brix-scale/", location.href).href;
+const VISITOR_TZ = (Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC");
+let slotState = null; // { lead, slots, day, busy }
+
+const fmtDayKey = new Intl.DateTimeFormat("en-CA", { timeZone: VISITOR_TZ, year: "numeric", month: "2-digit", day: "2-digit" });
+const fmtDayLabel = new Intl.DateTimeFormat(undefined, { timeZone: VISITOR_TZ, weekday: "short", day: "numeric", month: "short" });
+const fmtTime = new Intl.DateTimeFormat(undefined, { timeZone: VISITOR_TZ, hour: "numeric", minute: "2-digit" });
+const fmtFull = new Intl.DateTimeFormat(undefined, { timeZone: VISITOR_TZ, weekday: "long", day: "numeric", month: "long", hour: "numeric", minute: "2-digit" });
+
+async function fetchJson(url, options = {}, timeoutMs = 12000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal, credentials: "same-origin" });
+    const data = await res.json().catch(() => ({}));
+    return { status: res.status, data };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function showBooking(lead) {
   form.hidden = true;
   done.hidden = true;
@@ -567,8 +592,171 @@ async function showBooking(lead) {
   setBookingProgress("Details saved ✓ · Last step: book your call");
   $("#bookingTitle").focus?.();
 
-  if (calendlyMounted) return;
+  if (calendlyMounted || slotState) return;
+  $("#bookingLoading").hidden = false;
+
+  let slots = null;
+  let duration = 0;
+  if (location.protocol.startsWith("http")) {
+    try {
+      const { status, data } = await fetchJson(BOOKING_API + "slots", {}, 8000);
+      if (status === 200 && data.enabled && Array.isArray(data.slots) && data.slots.length) {
+        slots = data.slots;
+        duration = data.duration || 0;
+      }
+    } catch (err) {
+      console.warn("[BRIX] Open times unavailable, using the Calendly calendar:", err);
+    }
+  }
+
+  $("#bookingLoading").hidden = true;
+  if (slots) showSlots(lead, slots, duration);
+  else mountCalendly(lead);
+}
+
+/* ---------- In-page time picker ---------- */
+function showSlots(lead, slots, duration) {
+  const byDay = new Map();
+  slots.forEach((iso) => {
+    const key = fmtDayKey.format(new Date(iso));
+    if (!byDay.has(key)) byDay.set(key, []);
+    byDay.get(key).push(iso);
+  });
+  slotState = { lead, byDay, day: byDay.keys().next().value, busy: false, duration };
+
+  $("#slots").hidden = false;
+  $("#calendlyWrap").hidden = true;
+  let tzName = VISITOR_TZ.replace(/_/g, " ");
+  try {
+    tzName = new Intl.DateTimeFormat(undefined, { timeZone: VISITOR_TZ, timeZoneName: "long" })
+      .formatToParts(new Date()).find((p) => p.type === "timeZoneName")?.value || tzName; // e.g. "India Standard Time"
+  } catch { /* keep the raw name */ }
+  $("#slotsTz").textContent = `Times shown in ${tzName}${duration ? ` · ${duration} minute call` : ""}. Tap a time to book it.`;
+  renderDays();
+  renderTimes();
+}
+
+function renderDays() {
+  const wrap = $("#slotsDays");
+  wrap.innerHTML = "";
+  slotState.byDay.forEach((times, key) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "slots__day" + (key === slotState.day ? " is-active" : "");
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", String(key === slotState.day));
+    const [weekday, ...rest] = fmtDayLabel.format(new Date(times[0])).replace(",", "").split(" ");
+    b.innerHTML = `<span>${weekday}</span><strong>${rest.join(" ")}</strong><small>${times.length} open</small>`;
+    b.addEventListener("click", () => {
+      if (slotState.busy) return;
+      slotState.day = key;
+      $("#slotsMsg").textContent = "";
+      renderDays();
+      renderTimes();
+    });
+    wrap.appendChild(b);
+  });
+  wrap.querySelector(".is-active")?.scrollIntoView({ block: "nearest", inline: "nearest" });
+}
+
+function renderTimes() {
+  const wrap = $("#slotsTimes");
+  wrap.innerHTML = "";
+  (slotState.byDay.get(slotState.day) || []).forEach((iso) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "slots__time";
+    b.textContent = fmtTime.format(new Date(iso));
+    b.setAttribute("aria-label", `Book ${fmtFull.format(new Date(iso))}`);
+    b.addEventListener("click", () => bookSlot(iso, b));
+    wrap.appendChild(b);
+  });
+}
+
+async function bookSlot(iso, button) {
+  if (slotState.busy) return;
+  slotState.busy = true;
+  const { lead } = slotState;
+  const msg = $("#slotsMsg");
+  $$(".slots__time, .slots__day").forEach((b) => (b.disabled = true));
+  button.classList.add("is-booking");
+  button.innerHTML = '<span class="spinner" aria-hidden="true"></span> Booking…';
+  msg.textContent = `Booking ${fmtFull.format(new Date(iso))}…`;
+
+  const utm = getUtm();
+  let result = null;
+  try {
+    const { data } = await fetchJson(BOOKING_API + "book", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        start_time: iso,
+        name: lead.fullName,
+        email: lead.email,
+        phone: toCalendlyPhone(lead.phone),
+        agency: lead.agencyName,
+        clients: lead.clientsLabel,
+        timezone: VISITOR_TZ,
+        lead_id: lead.leadId,
+        ...utm,
+      }),
+    }, 25000);
+    result = data;
+  } catch (err) {
+    console.error("[BRIX] Booking request failed:", err);
+  }
+
+  if (result && result.ok) {
+    markBooked(lead, { start: result.start_time || iso, eventUri: result.event_uri, inviteeUri: result.invitee_uri, rescheduleUrl: result.reschedule_url });
+    return;
+  }
+
+  slotState.busy = false;
+  if (result && result.code === "slot_taken") {
+    msg.textContent = result.message || "Someone just took that time. Pick another one.";
+    // Drop the taken time and let them pick again
+    const day = slotState.byDay.get(slotState.day) || [];
+    slotState.byDay.set(slotState.day, day.filter((t) => t !== iso));
+    if (!slotState.byDay.get(slotState.day).length) slotState.byDay.delete(slotState.day);
+    if (!slotState.byDay.size) { mountCalendly(lead); return; }
+    if (!slotState.byDay.has(slotState.day)) slotState.day = slotState.byDay.keys().next().value;
+    renderDays();
+    renderTimes();
+    return;
+  }
+
+  // Anything else: finish on the Calendly calendar, opened on the day they picked
+  msg.textContent = (result && result.message) || "Pick your time on the calendar below to finish booking.";
+  mountCalendly(lead, fmtDayKey.format(new Date(iso)));
+}
+
+function markBooked(lead, { start, eventUri = "", inviteeUri = "", rescheduleUrl = "" }) {
+  storage.set(LEAD_KEY, { ...lead, booked: true, bookedAt: start || "", rescheduleUrl });
+  postToSheets({
+    action: "booked",
+    leadId: lead.leadId || "",
+    email: lead.email || "",
+    eventUri,
+    inviteeUri,
+  }).catch((err) => console.error("[BRIX] Could not mark booking:", err));
+  if (window.dataLayer) window.dataLayer.push({ event: "brix_call_booked" });
+  showDone();
+}
+
+/* ---------- Calendly calendar (fallback) ---------- */
+async function mountCalendly(lead, date) {
+  $("#bookingLoading").hidden = true;
   const wrap = $("#calendlyWrap");
+  wrap.hidden = false;
+  if (slotState) {
+    // Keep any message, hide the picker
+    $("#slotsDays").innerHTML = "";
+    $("#slotsTimes").innerHTML = "";
+    $("#slotsTz").textContent = "";
+    if (!$("#slotsMsg").textContent) $("#slots").hidden = true;
+  }
+  if (calendlyMounted) return;
+  calendlyMounted = true;
 
   if (!isConfigured(CONFIG.CALENDLY_URL)) {
     wrap.innerHTML = '<div class="calendly-missing"><strong>Calendly isn\'t connected yet.</strong><br/>Set <code>CALENDLY_URL</code> in <code>script.js</code> to your event link.</div>';
@@ -584,7 +772,8 @@ async function showBooking(lead) {
       customAnswers[key] = field === "phone" ? toCalendlyPhone(lead.phone) : lead[field];
     });
     const sep = CONFIG.CALENDLY_URL.includes("?") ? "&" : "?";
-    const url = `${CONFIG.CALENDLY_URL}${sep}hide_gdpr_banner=1&primary_color=${CONFIG.CALENDLY_PRIMARY_COLOR}`;
+    const day = date ? `&month=${date.slice(0, 7)}&date=${date}` : "";
+    const url = `${CONFIG.CALENDLY_URL}${sep}hide_gdpr_banner=1&primary_color=${CONFIG.CALENDLY_PRIMARY_COLOR}${day}`;
     const utm = getUtm();
 
     window.Calendly.initInlineWidget({
@@ -599,7 +788,6 @@ async function showBooking(lead) {
         utmTerm: utm.utm_term || undefined,
       },
     });
-    calendlyMounted = true;
     setTimeout(() => $("#calendlyLoading")?.remove(), 4000);
   } catch (err) {
     console.error(err);
@@ -612,6 +800,12 @@ function showDone() {
   booking.hidden = true;
   done.hidden = false;
   setBookingProgress("All done ✓ · You're booked");
+  const saved = storage.get(LEAD_KEY) || {};
+  const when = $("#doneWhen");
+  when.hidden = !saved.bookedAt;
+  if (saved.bookedAt) when.textContent = fmtFull.format(new Date(saved.bookedAt));
+  $("#doneLinks").hidden = !saved.rescheduleUrl;
+  if (saved.rescheduleUrl) $("#doneReschedule").href = saved.rescheduleUrl;
 }
 
 // Listen to Calendly events (booking confirmed → update the sheet row)
@@ -625,17 +819,10 @@ window.addEventListener("message", (e) => {
   if (evt === "calendly.event_scheduled") {
     const lead = storage.get(LEAD_KEY) || {};
     const p = e.data.payload || {};
-    storage.set(LEAD_KEY, { ...lead, booked: true });
-
-    postToSheets({
-      action: "booked",
-      leadId: lead.leadId || "",
-      email: lead.email || "",
+    // Let Calendly show its own confirmation briefly, then ours
+    setTimeout(() => markBooked(lead, {
       eventUri: (p.event && p.event.uri) || "",
       inviteeUri: (p.invitee && p.invitee.uri) || "",
-    }).catch((err) => console.error("[BRIX] Could not mark booking:", err));
-
-    if (window.dataLayer) window.dataLayer.push({ event: "brix_call_booked" });
-    setTimeout(showDone, 1800); // let Calendly show its own confirmation briefly
+    }), 1800);
   }
 });

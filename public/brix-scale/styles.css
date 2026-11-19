@@ -207,9 +207,24 @@ p { margin: 0; }
 .agency__logo { width: auto; max-width: 100%; }
 .agency__logo--sf { height: 64px; }
 .agency__logo--dg { height: 76px; }
-/* Chart tile: background matches the image's own off-white so the edges blend */
-.agency--chart { padding: 16px 20px; background: #f3f3ee; border-color: #e6e5df; }
-.agency__chart { width: auto; max-width: 100%; height: 100%; max-height: 116px; object-fit: contain; }
+.agency--open { padding: 0; border-style: dashed; border-width: 1.5px; background: var(--cream); }
+.agency--open button {
+  width: 100%; height: 100%; padding: 22px; border: 0; background: none; color: var(--ink);
+  display: grid; justify-items: center; align-content: center; gap: 4px; border-radius: var(--r-card);
+}
+.agency__avatar {
+  position: relative; display: grid; place-items: center; width: 60px; height: 60px; margin-bottom: 8px;
+  border-radius: 50%; background: var(--wash-2); overflow: visible;
+}
+.agency__avatar svg { width: 60px; height: 60px; border-radius: 50%; fill: var(--accent-soft); }
+.agency__badge {
+  position: absolute; right: -2px; bottom: -2px; display: grid; place-items: center; width: 24px; height: 24px;
+  border-radius: 50%; background: var(--accent); color: #fff; border: 2px solid var(--cream);
+  font-size: 16px; font-weight: 700; line-height: 1;
+}
+.agency--open button:hover .agency__avatar { background: var(--wash); }
+.agency--open strong { font-size: 16px; }
+.agency--open small { font-size: 14px; color: var(--accent); font-weight: 600; }
 @media (max-width: 760px) {
   .agencies__row { grid-template-columns: 1fr; max-width: 420px; gap: 12px; }
   .agency { min-height: 108px; }
@@ -217,6 +232,12 @@ p { margin: 0; }
   .agency__logo--sf { height: 52px; }
   .agency__logo--dg { height: 64px; }
 }
+
+/* ---------- Section call to action ---------- */
+.section-cta { margin-top: 48px; display: grid; justify-items: center; gap: 12px; text-align: center; }
+.section-cta__note { font-size: 14px; color: var(--grey); }
+.section--deep .section-cta__note { color: var(--deep-muted); }
+.agencies .section-cta { margin-top: 36px; }
 
 /* ---------- Sections ---------- */
 .section { padding: clamp(72px, 9vw, 120px) 0; }
@@ -454,6 +475,44 @@ p { margin: 0; }
 .booking .kicker { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
 .booking__title { margin-top: 12px; font-size: clamp(28px, 4.6vw, 46px); font-weight: 800; letter-spacing: -0.04em; }
 .booking__sub { margin-top: 14px; color: var(--muted); max-width: 620px; }
+.booking__loading { margin-top: 32px; color: var(--grey); font-weight: 600; }
+.booking__loading[hidden], .calendly-wrap[hidden], .slots[hidden] { display: none; }
+
+/* In-page time picker */
+.slots { margin-top: 28px; }
+.slots__tz { font-size: 14px; color: var(--grey); }
+.slots__days {
+  margin-top: 16px; display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 10px;
+  scroll-snap-type: x proximity; scrollbar-width: thin;
+}
+.slots__day {
+  flex: none; scroll-snap-align: start; display: grid; justify-items: center; gap: 2px; min-width: 92px; padding: 12px 10px;
+  border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper); color: var(--ink);
+  transition: border-color .2s, background-color .2s;
+}
+.slots__day span { font-size: 13px; font-weight: 600; color: var(--grey); }
+.slots__day strong { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; }
+.slots__day small { font-size: 12px; color: var(--grey); }
+.slots__day:hover { border-color: var(--ink); }
+.slots__day.is-active { border-color: var(--accent); background: var(--wash); }
+.slots__day.is-active span, .slots__day.is-active small { color: var(--accent-deep); }
+.slots__times { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
+.slots__time {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 12px;
+  border: 1.5px solid var(--line); border-radius: 12px; background: var(--paper); color: var(--ink);
+  font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; transition: border-color .2s, background-color .2s, color .2s;
+}
+.slots__time:hover { border-color: var(--accent); color: var(--accent-deep); }
+.slots__time.is-booking { background: var(--accent); border-color: var(--accent); color: #fff; }
+.slots__time .spinner { border-color: rgba(255, 255, 255, .35); border-top-color: #fff; }
+.slots__day:disabled, .slots__time:disabled:not(.is-booking) { opacity: .5; cursor: default; }
+.slots__msg { min-height: 22px; margin-top: 14px; font-size: 14.5px; font-weight: 600; color: var(--accent-deep); }
+
+.done__when { margin-top: 10px; font-size: clamp(18px, 2.4vw, 22px); font-weight: 700; color: var(--accent); }
+.done__links { margin-top: 12px; font-size: 14px; }
+.done__links a { color: var(--grey); text-decoration: underline; text-underline-offset: 3px; }
+.done__links a:hover { color: var(--ink); }
+
 .calendly-wrap { position: relative; margin-top: 32px; min-height: 700px; border-radius: var(--r-card); overflow: hidden; background: #fff; border: 1px solid var(--line); }
 .calendly-wrap .calendly-inline-widget, .calendly-wrap iframe { width: 100%; min-height: 700px; height: 700px; border: 0; }
 .calendly-loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--grey); font-weight: 600; }
@@ -486,7 +545,8 @@ p { margin: 0; }
   .hero { padding: 36px 0 56px; }
   .hero__title { font-size: clamp(34px, 10vw, 44px); }
   .hero__features { grid-template-columns: 1fr; gap: 18px; margin-top: 28px; }
-  .hero__cta .btn, .final__cta .btn, .center .btn { width: 100%; }
+  .hero__cta .btn, .final__cta .btn, .center .btn, .section-cta .btn { width: 100%; }
+  .section-cta { margin-top: 32px; }
   .micro { text-align: center; }
   .hero__visual { padding: 58px 8px 60px; }
   .mock { padding: 18px; }

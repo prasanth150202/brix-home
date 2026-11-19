@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require BASE_PATH . '/app/controllers/site.php';
 require BASE_PATH . '/app/controllers/api.php';
+require BASE_PATH . '/app/controllers/brix_scale.php';
 require BASE_PATH . '/app/controllers/admin/auth.php';
 require BASE_PATH . '/app/controllers/admin/kb.php';
 require BASE_PATH . '/app/controllers/admin/ai.php';
@@ -19,6 +20,10 @@ route('GET', '/sitemap.xml', 'site_sitemap');
 route('GET', '/robots.txt', 'site_robots');
 route('POST', '/api/chat', 'api_chat');
 route('POST', '/api/track', 'api_track');
+
+// BRIX Scale landing page (public/brix-scale/) only: in-page Calendly booking
+route('GET', '/api/brix-scale/slots', 'api_brix_scale_slots');
+route('POST', '/api/brix-scale/book', 'api_brix_scale_book');
 
 // Admin
 route('GET|POST', '/admin/login', 'admin_login');
@@ -61,6 +66,7 @@ route('POST', '/admin/media/{id}/delete', 'admin_media_delete');
 
 route('GET|POST', '/admin/homepage', 'admin_homepage');
 route('GET|POST', '/admin/settings', 'admin_settings');
+route('GET|POST', '/admin/brix-scale', 'admin_brix_scale');
 route('GET', '/admin/users', 'admin_users');
 route('GET|POST', '/admin/users/new', 'admin_user_form');
 route('GET|POST', '/admin/users/{id}', 'admin_user_form');

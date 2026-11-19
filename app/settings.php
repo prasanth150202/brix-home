@@ -94,6 +94,13 @@ function setting_defaults(): array
             'fashion => fashion apparel complete the look',
         ]),
 
+        // BRIX Scale landing page (public/brix-scale/) only: in-page Calendly booking.
+        // Not used by the main site or BRIX AI. See app/controllers/brix_scale.php.
+        'brix_scale_booking_enabled'     => '0',
+        'brix_scale_calendly_token'      => '',
+        'brix_scale_calendly_event_type' => '',
+        'brix_scale_calendly_event_meta' => '{}',
+
         // Homepage sections
         'home_brands_enabled' => '1',
         'home_brands' => $json([

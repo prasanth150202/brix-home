@@ -83,3 +83,16 @@ To test locally, run `serve.bat` and open http://localhost:8000/brix-scale/.
 - **Copy:** all text is in `index.html`.
 - **Dropdown options:** edit the `<select id="clients">` block in `index.html`.
 - **Tracking:** if Google Tag Manager is on the page, `brix_lead_submitted` and `brix_call_booked` are pushed to `dataLayer`.
+
+## In-page booking (optional)
+
+The BRIX Scale page can book calls itself, so visitors tap a time and never see Calendly's "Schedule Event" screen.
+This is for the BRIX Scale page only; the main BRIX site and BRIX AI don't use it.
+
+1. In Calendly, create a personal access token (Integrations → API and webhooks).
+2. On the live site, open **Admin → BRIX Scale page → Calendly booking**, paste the token, pick the event type, switch it on and save.
+   The token is stored in the site database on the server and is never sent to visitors. Don't put it in files or chat.
+
+Until it's switched on, or whenever booking fails, the page shows the regular Calendly calendar instead.
+Calendly's Free plan allows 5 API bookings a day; after that visitors get the calendar automatically.
+Code: `app/controllers/brix_scale.php`, `app/BrixScale/`, `views/admin/brix_scale.php`, and the booking part of `public/brix-scale/script.js`.

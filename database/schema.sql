@@ -300,3 +300,24 @@ CREATE TABLE IF NOT EXISTS cta_clicks (
   PRIMARY KEY (id),
   KEY idx_cta_clicks_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- BRIX Scale landing page (public/brix-scale/) only: calls booked through the in-page time picker.
+-- Also created automatically on first use (app/controllers/brix_scale.php), so existing databases need no manual step.
+CREATE TABLE IF NOT EXISTS brix_scale_bookings (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    lead_id VARCHAR(64) NOT NULL DEFAULT '',
+    name VARCHAR(120) NOT NULL DEFAULT '',
+    email VARCHAR(190) NOT NULL,
+    phone VARCHAR(32) NOT NULL DEFAULT '',
+    start_time DATETIME NOT NULL,
+    status VARCHAR(16) NOT NULL,
+    invitee_uri VARCHAR(255) NOT NULL DEFAULT '',
+    event_uri VARCHAR(255) NOT NULL DEFAULT '',
+    reschedule_url VARCHAR(255) NOT NULL DEFAULT '',
+    cancel_url VARCHAR(255) NOT NULL DEFAULT '',
+    error VARCHAR(500) NULL,
+    ip_hash CHAR(64) NOT NULL DEFAULT '',
+    created_at DATETIME NOT NULL,
+    KEY idx_bsb_ip (ip_hash, created_at),
+    KEY idx_bsb_email (email, start_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
