@@ -2,17 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KKM9SQTC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BRIX — Scale Your Agency 30%. No Course. No Upsell.</title>
+  <title>BRIX | Scale Your Agency 30%. No Course. No Upsell.</title>
   <meta name="description" content="Scale your agency revenue by 30%. One free call. No paid course, no upsell, nothing to sell." />
-  <meta property="og:title" content="BRIX — Scale your agency revenue by 30%." />
+  <meta property="og:title" content="BRIX | Scale your agency revenue by 30%." />
   <meta property="og:description" content="One free call. No paid course, no upsell, nothing to sell." />
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#ffffff" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="apple-touch-icon" href="assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -21,14 +28,18 @@
   <header class="nav" id="nav">
     <div class="container nav__inner">
       <a href="#top" class="logo" aria-label="BRIX home">
-        <img src="assets/brix-logo.png" alt="BRIX" width="2135" height="497" />
+        <img src="assets/brix-logo-dark.png" alt="BRIX" width="2279" height="496" />
       </a>
       <nav class="nav__links" aria-label="Primary">
         <a href="#why-brix">Why Brix</a>
-        <a href="#how">How it works</a>
+        <a href="#growth">Guarantee</a>
+        <a href="#who">Who we are</a>
         <a href="#faq">FAQ</a>
       </nav>
-      <button class="btn btn--accent btn--sm" data-open-form>Book Now</button>
+      <div class="nav__cta">
+        <a href="#how" class="btn btn--outline btn--sm nav__secondary">How it works</a>
+        <button class="btn btn--accent btn--sm" data-open-form>Book Now</button>
+      </div>
     </div>
   </header>
 
@@ -37,99 +48,245 @@
     <!-- ============ HERO ============ -->
     <section class="hero">
       <div class="container hero__inner">
-        <h1 class="hero__title reveal">
-          Scale your agency revenue by <span class="accent">30%.</span><br />
-          No course. No upsell.<br class="br-md" /> No catch.
-        </h1>
-        <p class="hero__sub reveal">
-          Most agencies are a lot closer to 30% more revenue than they think. On one free call, we'll show you how to get there.
-          No paid course. No upsell. Nothing to sell you.
-        </p>
-        <div class="hero__cta reveal">
-          <button class="btn btn--accent btn--lg" data-open-form>
-            Book Now
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
-          <p class="micro">Free &middot; Takes 60 seconds &middot; Nothing to buy</p>
+        <div class="hero__copy">
+          <p class="pill reveal">Built for Shopify agencies</p>
+          <h1 class="hero__title reveal">Scale your agency revenue by <span class="accent">30%.</span></h1>
+          <p class="hero__sub reveal">
+            Most agencies are a lot closer to 30% more revenue than they think. On one free call, we'll show you how to get there.
+            No paid course. No upsell. Nothing to sell you.
+          </p>
+
+          <ul class="hero__features reveal">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg>
+              <div><strong>30% more, every month</strong><span>Recurring revenue that lands month after month.</span></div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+              <div><strong>Guaranteed from month one</strong><span>Results land in your very first month.</span></div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
+              <div><strong>$0 to your agency</strong><span>No fees, no card, no course to buy.</span></div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+              <div><strong>1 on 1, not a webinar</strong><span>A live call with a real person on our team.</span></div>
+            </li>
+          </ul>
+
+          <div class="hero__cta reveal">
+            <button class="btn btn--accent btn--lg" data-open-form>
+              Book Now
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <a href="#how" class="btn btn--outline btn--lg">How it works <span aria-hidden="true">&rarr;</span></a>
+          </div>
+          <p class="micro reveal">Free &middot; Takes 60 seconds &middot; No course, no upsell</p>
         </div>
 
-        <ul class="hero__stats reveal" aria-label="At a glance">
-          <li><strong>30%</strong><span>Recurring, every month</span></li>
-          <li><strong>$0</strong><span>Cost to your agency</span></li>
-          <li><strong>1 on 1</strong><span>Live call, not a webinar</span></li>
-          <li><strong>0</strong><span>Courses or upsells</span></li>
+        <!-- Illustration: agency revenue climbing 30% -->
+        <div class="hero__visual reveal" aria-hidden="true">
+          <div class="mock">
+            <div class="mock__head">
+              <span>Agency revenue</span>
+              <span class="mock__badge">+30%</span>
+            </div>
+            <div class="mock__chart">
+              <span style="--h: 62%"></span>
+              <span style="--h: 62%"></span>
+              <span class="is-up" style="--h: 81%"></span>
+              <span class="is-up" style="--h: 81%"></span>
+              <span class="is-up" style="--h: 81%"></span>
+              <span class="is-up" style="--h: 81%"></span>
+            </div>
+            <div class="mock__axis"><span>Before</span><span>Now</span><span>M1</span><span>M2</span><span>M3</span><span>M4</span></div>
+          </div>
+          <div class="chip chip--top">
+            <span class="chip__icon"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+            <div><strong>Month 1</strong><small>First revenue in</small></div>
+          </div>
+          <div class="chip chip--bottom">
+            <span class="chip__icon chip__icon--ink"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4"/></svg></span>
+            <div><strong>Recurring</strong><small>Every month after</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ OUR SUCCESSFUL AGENCIES ============ -->
+    <section class="agencies" id="agencies">
+      <div class="container">
+        <p class="eyebrow eyebrow--center reveal">Success stories</p>
+        <h2 class="agencies__title reveal">Agencies already winning with <span class="accent">BRIX</span></h2>
+
+        <ul class="agencies__row">
+          <li class="agency reveal">
+            <img src="assets/agency-studio-forge.png" alt="Studio Forge" width="420" height="253" loading="lazy" class="agency__logo agency__logo--sf" />
+          </li>
+          <li class="agency agency--featured reveal">
+            <img src="assets/agency-digifyce.png" alt="Digifyce" width="640" height="258" loading="lazy" class="agency__logo agency__logo--dg" />
+          </li>
+          <li class="agency agency--chart reveal">
+            <img src="assets/growth-chart.jpg" alt="Revenue chart climbing month after month" width="720" height="531" loading="lazy" class="agency__chart" />
+          </li>
         </ul>
       </div>
     </section>
 
-    <!-- ============ MARQUEE ============ -->
-    <!-- Two identical groups, each at least full width: seamless loop with no gap on any screen size -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__group">
-        <span>30% growth</span><i>&#9632;</i><span>No paid course</span><i>&#9632;</i><span>No upsell</span><i>&#9632;</i><span>Nothing to sell</span><i>&#9632;</i>
-        <span>30% growth</span><i>&#9632;</i><span>No paid course</span><i>&#9632;</i><span>No upsell</span><i>&#9632;</i><span>Nothing to sell</span><i>&#9632;</i>
-      </div>
-      <div class="marquee__group">
-        <span>30% growth</span><i>&#9632;</i><span>No paid course</span><i>&#9632;</i><span>No upsell</span><i>&#9632;</i><span>Nothing to sell</span><i>&#9632;</i>
-        <span>30% growth</span><i>&#9632;</i><span>No paid course</span><i>&#9632;</i><span>No upsell</span><i>&#9632;</i><span>Nothing to sell</span><i>&#9632;</i>
-      </div>
-    </div>
-
     <!-- ============ WHY BRIX ============ -->
     <section class="section" id="why-brix">
       <div class="container">
-        <p class="kicker reveal">Why Brix</p>
-        <h2 class="h2 reveal">Guaranteed revenue<br />from the first month.</h2>
-        <p class="lead reveal">
-          Not "someday, if it works." You start earning in month one, and it keeps coming in every month after that.
-        </p>
+        <header class="head head--center">
+          <p class="eyebrow reveal">Why Brix</p>
+          <h2 class="h2 reveal">Guaranteed revenue from the first month.</h2>
+          <p class="lede reveal">Not "someday, if it works." You start earning in month one, and it keeps coming in every month after that.</p>
+        </header>
 
-        <div class="why">
-          <article class="why__card why__card--accent reveal">
-            <span class="why__num">01</span>
-            <h3>Revenue from month one</h3>
-            <p>Guaranteed from your first month. No 90-day "transformation" before you see a result.</p>
+        <div class="cards" data-slider>
+          <article class="card card--ink reveal">
+            <p class="card__label">01 &middot; Month one</p>
+            <h3>Revenue from <span class="hl">month one</span></h3>
+            <p>Guaranteed from your first month. No three month "transformation" before anything happens.</p>
+            <ul class="checks">
+              <li>Guaranteed from your first month</li>
+              <li>No long wait</li>
+              <li>Keeps coming in every month</li>
+            </ul>
           </article>
-          <article class="why__card reveal">
-            <span class="why__num">02</span>
-            <h3>Not another online guru</h3>
+          <article class="card card--accent reveal">
+            <p class="card__label">02 &middot; Real team</p>
+            <h3>Not another <span class="hl">online guru</span></h3>
             <p>No hype and no inflated promises. Just a straightforward partnership, backed by a real team and measured in real revenue.</p>
+            <ul class="checks">
+              <li>No hype or inflated promises</li>
+              <li>A real team behind it</li>
+              <li>Measured in real revenue</li>
+            </ul>
           </article>
-          <article class="why__card reveal">
-            <span class="why__num">03</span>
-            <h3>Nothing to buy</h3>
+          <article class="card card--wash reveal">
+            <p class="card__label">03 &middot; Zero cost</p>
+            <h3>Nothing <span class="hl">to buy</span></h3>
             <p>No course, no mastermind, no upsell. We don't make money by selling you anything.</p>
+            <ul class="checks">
+              <li>No course</li>
+              <li>No mastermind</li>
+              <li>No upsell</li>
+            </ul>
           </article>
         </div>
       </div>
     </section>
 
-<!-- ============ HOW IT WORKS ============ -->
-    <section class="section section--light" id="how">
+    <!-- ============ GUARANTEED GROWTH ============ -->
+    <section class="section section--deep" id="growth">
       <div class="container">
-        <p class="kicker reveal">How it works</p>
-        <h2 class="h2 reveal">Three steps. Zero catch.</h2>
+        <header class="head">
+          <p class="eyebrow reveal">Guaranteed growth</p>
+          <h2 class="h2 reveal">Growth from month one.<br />Not month six.</h2>
+          <p class="lede reveal">
+            Most growth promises make you wait months and &ldquo;trust the process.&rdquo;
+            Ours starts in your first month and keeps going every month after.
+          </p>
+        </header>
 
-        <ol class="steps">
+        <ol class="stages" data-slider>
+          <li class="stage stage--accent reveal">
+            <span class="stage__when">Day 1</span>
+            <h3>The call</h3>
+            <p>We map out exactly where your 30% comes from, specific to your agency.</p>
+          </li>
+          <li class="stage stage--lift reveal">
+            <span class="stage__when">Month 1</span>
+            <h3>Your first revenue</h3>
+            <p>Guaranteed from your first month. You see it within weeks, not quarters.</p>
+          </li>
+          <li class="stage stage--dark reveal">
+            <span class="stage__when">Every month</span>
+            <h3>It keeps coming in</h3>
+            <p>Recurring, month after month, without signing a single new retainer.</p>
+          </li>
+        </ol>
+
+        <div class="guarantee reveal">
+          <div class="guarantee__text">
+            <h3>Guaranteed. <span class="accent">In plain terms.</span></h3>
+            <p>
+              The guarantee is real, and so are the terms. We walk you through every detail on the call,
+              before you commit to anything. If it doesn't add up for your agency, you walk away.
+            </p>
+          </div>
+          <ul class="guarantee__list">
+            <li>$0 to get started</li>
+            <li>Full terms before you commit</li>
+            <li>1 on 1 with a real person, not a webinar</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHO WE ARE ============ -->
+    <section class="section section--wash" id="who">
+      <div class="container">
+        <header class="head">
+          <p class="eyebrow reveal">Who's behind this</p>
+          <h2 class="h2 reveal">We're not gurus. We grow Shopify brands.</h2>
+        </header>
+
+        <div class="panel reveal">
+          <div class="panel__text">
+            <p class="panel__lead">
+              BRIX works with Shopify brands every day on one thing: <strong>more revenue from the shoppers they already have.</strong>
+            </p>
+            <p>Fashion, skincare, FMCG. Real stores, measured in real numbers.</p>
+          </div>
+          <div class="panel__result">
+            <p class="panel__label">So why is the call free?</p>
+            <p class="panel__big">$0</p>
+            <p class="panel__note">
+              We don't sell courses, coaching or anything else to agencies. We make our money from the brands we work with.
+              On the call, we'll show you exactly how that turns into 30% more for your agency.
+            </p>
+            <button class="btn btn--accent" data-open-form>
+              Book your free call
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section" id="how">
+      <div class="container">
+        <header class="head">
+          <p class="eyebrow reveal">How it works</p>
+          <h2 class="h2 reveal">Three steps. Zero catch.</h2>
+        </header>
+
+        <ol class="steps" data-slider>
           <li class="step reveal">
             <span class="step__num">1</span>
             <h3>Apply</h3>
             <p>Five quick questions. Takes about 60 seconds.</p>
+            <span class="tag">About 60 seconds</span>
           </li>
           <li class="step reveal">
             <span class="step__num">2</span>
             <h3>Book your call</h3>
             <p>Pick a time that suits you, right after you apply.</p>
+            <span class="tag">Right after you apply</span>
           </li>
           <li class="step reveal">
             <span class="step__num">3</span>
-            <h3>See your 30%</h3>
+            <h3>Get your 30%</h3>
             <p>We'll show you where it is. What you do with it is up to you.</p>
+            <span class="tag">From month one</span>
           </li>
         </ol>
 
         <div class="center reveal">
-          <button class="btn btn--dark btn--lg" data-open-form>
+          <button class="btn btn--accent btn--lg" data-open-form>
             Book Now
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
@@ -138,11 +295,13 @@
     </section>
 
     <!-- ============ FIT ============ -->
-    <section class="section">
+    <section class="section section--cream">
       <div class="container">
-        <p class="kicker reveal">Is this for you?</p>
-        <h2 class="h2 reveal">We only take calls we can actually help with.</h2>
-        <div class="fit">
+        <header class="head head--center">
+          <p class="eyebrow reveal">Is this for you?</p>
+          <h2 class="h2 reveal">We only take calls we can actually help with.</h2>
+        </header>
+        <div class="fit" data-slider>
           <div class="fit__col fit__col--yes reveal">
             <h3>This is for you if&hellip;</h3>
             <ul>
@@ -156,7 +315,7 @@
             <h3>This is not for you if&hellip;</h3>
             <ul>
               <li>You don't work with Shopify stores</li>
-              <li>You're looking for a get-rich-quick shortcut</li>
+              <li>You're looking for a shortcut to easy money</li>
               <li>You'd recommend anything to a client for a paycheck</li>
               <li>You book calls you don't plan to show up for</li>
             </ul>
@@ -166,10 +325,12 @@
     </section>
 
     <!-- ============ FAQ ============ -->
-    <section class="section section--light" id="faq">
+    <section class="section" id="faq">
       <div class="container container--narrow">
-        <p class="kicker reveal">FAQ</p>
-        <h2 class="h2 reveal">Questions you're probably asking.</h2>
+        <header class="head head--center">
+          <p class="eyebrow reveal">FAQ</p>
+          <h2 class="h2 reveal">Questions you're probably asking.</h2>
+        </header>
 
         <div class="faq">
           <details class="reveal">
@@ -178,7 +339,7 @@
           </details>
           <details class="reveal">
             <summary>So what's the catch?</summary>
-            <p>There isn't one. We know that's hard to believe, so book the call and judge for yourself.</p>
+            <p>Fair question. We don't sell anything to agencies. We make our money from the Shopify brands we work with, and the call is how we find agencies to grow with. We'll walk you through exactly how it works. If it's not a fit, you've lost nothing but 30 minutes.</p>
           </details>
           <details class="reveal">
             <summary>Is this another online course?</summary>
@@ -196,27 +357,42 @@
       </div>
     </section>
 
-<!-- ============ FINAL CTA ============ -->
+    <!-- ============ FINAL CTA ============ -->
     <section class="final">
       <div class="container final__inner">
-        <h2 class="final__title reveal">Your next 30% is<br />one call away.</h2>
-        <p class="lead reveal">One free call. No paid course. No upsell. Nothing to sell.</p>
-        <div class="reveal">
+        <h2 class="final__title reveal">Your next 30% is one call away.</h2>
+        <p class="final__sub reveal">One free call. No paid course. No upsell. Nothing to sell.</p>
+        <div class="final__cta reveal">
           <button class="btn btn--accent btn--lg" data-open-form>
             Book Now
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
+          <a href="#faq" class="btn btn--outline-light btn--lg">Read the FAQ</a>
         </div>
+        <ul class="final__checks reveal">
+          <li>Free call</li>
+          <li>Takes 60 seconds</li>
+          <li>Guaranteed from month one</li>
+        </ul>
       </div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="container footer__inner">
-      <a href="#top" class="logo logo--sm" aria-label="BRIX home">
-        <img src="assets/brix-logo.png" alt="BRIX" width="2135" height="497" loading="lazy" />
-      </a>
-      <p>&copy; <span id="year"></span> BRIX. All rights reserved.</p>
+      <div class="footer__brand">
+        <a href="#top" class="logo" aria-label="BRIX home">
+          <img src="assets/brix-logo.png" alt="BRIX" width="2283" height="497" loading="lazy" />
+        </a>
+        <p>Scale your agency revenue by 30%. No course. No upsell.</p>
+      </div>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="#why-brix">Why Brix</a>
+        <a href="#growth">Guarantee</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <p class="footer__copy">&copy; <span id="year"></span> BRIX. All rights reserved.</p>
       <p class="footer__note">Terms apply. Full details are shared on the call.</p>
     </div>
   </footer>
@@ -226,9 +402,9 @@
     <div class="apply__top">
       <div class="apply__bar">
         <span class="logo logo--sm">
-          <img src="assets/brix-logo.png" alt="BRIX" width="2135" height="497" />
+          <img src="assets/brix-logo-dark.png" alt="BRIX" width="2279" height="496" />
         </span>
-        <p class="apply__status" id="progressLabel" aria-live="polite">Step 1 of 5</p>
+        <p class="apply__status" id="progressLabel" aria-live="polite">Step 1 of 3</p>
         <button class="apply__close" id="closeForm" aria-label="Close">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
         </button>
@@ -247,57 +423,69 @@
           <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
         </div>
 
-        <!-- Step 1 -->
+        <!-- Step 1 of 3: name + email -->
         <fieldset class="q is-active" data-step="1">
-          <legend class="q__label"><span class="q__num">1 &rarr;</span> What's your full name?</legend>
-          <input class="q__input" type="text" name="fullName" id="fullName" autocomplete="name" placeholder="Jane Doe" required minlength="2" />
-          <p class="q__error" data-error-for="fullName"></p>
+          <legend class="q__step">Step 1 of 3 &middot; About you</legend>
+          <div class="q__field">
+            <label class="q__label" for="fullName">What's your full name?</label>
+            <input class="q__input" type="text" name="fullName" id="fullName" autocomplete="name" placeholder="Jane Doe" required minlength="2" />
+            <p class="q__error" data-error-for="fullName"></p>
+          </div>
+          <div class="q__field">
+            <label class="q__label" for="email">What's your email?</label>
+            <input class="q__input" type="email" name="email" id="email" autocomplete="email" placeholder="you@agency.com" required />
+            <p class="q__hint">We'll send your call confirmation here.</p>
+            <p class="q__error" data-error-for="email"></p>
+          </div>
         </fieldset>
 
-        <!-- Step 2 -->
+        <!-- Step 2 of 3: phone + agency -->
         <fieldset class="q" data-step="2">
-          <legend class="q__label"><span class="q__num">2 &rarr;</span> What's your best email, <span data-first-name>there</span>?</legend>
-          <input class="q__input" type="email" name="email" id="email" autocomplete="email" placeholder="you@agency.com" required />
-          <p class="q__hint">We'll send your call confirmation here.</p>
-          <p class="q__error" data-error-for="email"></p>
+          <legend class="q__step">Step 2 of 3 &middot; Your number and agency</legend>
+          <div class="q__field">
+            <label class="q__label" for="phone">What's your number?</label>
+            <div class="phone">
+              <div class="phone__cc">
+                <span class="phone__ccLabel q__input" id="phoneCcLabel" aria-hidden="true">IN +91</span>
+                <select name="phoneCountry" id="phoneCountry" aria-label="Country code" autocomplete="tel-country-code"></select>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+              <input class="q__input" type="tel" name="phone" id="phone" autocomplete="tel-national" inputmode="tel" placeholder="98765 43210" required />
+            </div>
+            <p class="q__hint">Pick your country code, then your number. Only used for your call.</p>
+            <p class="q__error" data-error-for="phone"></p>
+          </div>
+          <div class="q__field">
+            <label class="q__label" for="agencyName">What's the name of your agency?</label>
+            <input class="q__input" type="text" name="agencyName" id="agencyName" autocomplete="organization" placeholder="Acme Growth Co." required />
+            <p class="q__error" data-error-for="agencyName"></p>
+          </div>
         </fieldset>
 
-        <!-- Step 3 -->
+        <!-- Step 3 of 3: client count -->
         <fieldset class="q" data-step="3">
-          <legend class="q__label"><span class="q__num">3 &rarr;</span> What's your phone number?</legend>
-          <input class="q__input" type="tel" name="phone" id="phone" autocomplete="tel" placeholder="+1 555 123 4567" required />
-          <p class="q__hint">Include your country code. Only used for your call.</p>
-          <p class="q__error" data-error-for="phone"></p>
-        </fieldset>
-
-        <!-- Step 4 -->
-        <fieldset class="q" data-step="4">
-          <legend class="q__label"><span class="q__num">4 &rarr;</span> What's the name of your agency?</legend>
-          <input class="q__input" type="text" name="agencyName" id="agencyName" autocomplete="organization" placeholder="Acme Growth Co." required />
-          <p class="q__error" data-error-for="agencyName"></p>
-        </fieldset>
-
-        <!-- Step 5 -->
-        <fieldset class="q" data-step="5">
-          <legend class="q__label"><span class="q__num">5 &rarr;</span> How many clients are you handling right now?</legend>
-          <div class="select">
-            <select class="q__input" name="clients" id="clients" required>
-              <option value="" selected disabled>Select an option</option>
-              <option value="0 (just starting)">0 &mdash; just starting out</option>
-              <option value="1-5">1 &ndash; 5 clients</option>
-              <option value="6-10">6 &ndash; 10 clients</option>
-              <option value="11-20">11 &ndash; 20 clients</option>
-              <option value="21-50">21 &ndash; 50 clients</option>
-              <option value="50+">50+ clients</option>
-              <option value="Other">Other</option>
-            </select>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          <legend class="q__step">Step 3 of 3 &middot; Last one</legend>
+          <div class="q__field">
+            <label class="q__label" for="clients">How many clients are you handling right now?</label>
+            <div class="select">
+              <select class="q__input" name="clients" id="clients" required>
+                <option value="" selected disabled>Select an option</option>
+                <option value="0 (just starting)">0 (just starting out)</option>
+                <option value="1-5">1 to 5 clients</option>
+                <option value="6-10">6 to 10 clients</option>
+                <option value="11-20">11 to 20 clients</option>
+                <option value="21-50">21 to 50 clients</option>
+                <option value="50+">50+ clients</option>
+                <option value="Other">Other</option>
+              </select>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="other" id="otherWrap" hidden>
+              <label for="clientsOther" class="q__hint">Tell us a bit more</label>
+              <input class="q__input" type="text" name="clientsOther" id="clientsOther" placeholder="e.g. 3 retainers + project work" />
+            </div>
+            <p class="q__error" data-error-for="clients"></p>
           </div>
-          <div class="other" id="otherWrap" hidden>
-            <label for="clientsOther" class="q__hint">Tell us a bit more</label>
-            <input class="q__input" type="text" name="clientsOther" id="clientsOther" placeholder="e.g. 3 retainers + project work" />
-          </div>
-          <p class="q__error" data-error-for="clients"></p>
         </fieldset>
 
         <div class="apply__nav" id="formNav">

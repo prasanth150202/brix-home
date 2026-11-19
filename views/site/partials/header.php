@@ -5,7 +5,7 @@ $home = $isHome ? '' : url('/');
 <header class="site-header" id="siteHeader">
   <div class="container header-row" data-dissolve>
     <a class="brand" href="<?= e(url('/')) ?>" aria-label="<?= e(setting('site_name')) ?> home">
-      <img src="<?= e(media_url((string) setting('site_logo'))) ?>" alt="<?= e(setting('site_name')) ?>" width="111" height="32">
+      <img src="<?= e(media_url((string) setting('site_logo'))) ?>" alt="<?= e(setting('site_name')) ?>" width="118" height="32">
     </a>
     <nav class="nav" id="siteNav" aria-label="Main">
       <a href="<?= e($home) ?>#<?= setting_on('home_apps_enabled') ? 'apps' : 'products' ?>">Products</a>

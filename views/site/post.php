@@ -53,7 +53,7 @@ $askQuestion = 'I just read "' . $post['title'] . '". How do I apply this to my 
         </div>
 
         <aside class="ask-box">
-          <span class="ask-mark"><img src="<?= e(media_url((string) setting('site_mark'))) ?>" alt="" width="22" height="24"></span>
+          <span class="ask-mark"><img src="<?= e(media_url((string) setting('site_mark'))) ?>" alt="" width="28" height="24"></span>
           <div>
             <h2>Want this for your store?</h2>
             <p>Ask BRIX AI how to apply this article, with numbers from real BRIX case studies.</p>
