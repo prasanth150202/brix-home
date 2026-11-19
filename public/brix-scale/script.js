@@ -503,7 +503,7 @@ async function submitLead() {
   nextBtn.disabled = true;
   backBtn.disabled = true;
   const label = $(".btn__label", nextBtn);
-  label.textContent = "Saving…";
+  label.textContent = "One last step…";
   nextBtn.insertAdjacentHTML("afterbegin", '<span class="spinner" aria-hidden="true"></span>');
 
   try {
