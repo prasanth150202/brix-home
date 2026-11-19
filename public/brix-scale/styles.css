@@ -509,9 +509,6 @@ p { margin: 0; }
 .slots__msg { min-height: 22px; margin-top: 14px; font-size: 14.5px; font-weight: 600; color: var(--accent-deep); }
 
 .done__when { margin-top: 10px; font-size: clamp(18px, 2.4vw, 22px); font-weight: 700; color: var(--accent); }
-.done__links { margin-top: 12px; font-size: 14px; }
-.done__links a { color: var(--grey); text-decoration: underline; text-underline-offset: 3px; }
-.done__links a:hover { color: var(--ink); }
 
 .calendly-wrap { position: relative; margin-top: 32px; min-height: 700px; border-radius: var(--r-card); overflow: hidden; background: #fff; border: 1px solid var(--line); }
 .calendly-wrap .calendly-inline-widget, .calendly-wrap iframe { width: 100%; min-height: 700px; height: 700px; border: 0; }

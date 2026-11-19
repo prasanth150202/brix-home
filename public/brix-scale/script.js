@@ -805,8 +805,6 @@ function showDone() {
   const when = $("#doneWhen");
   when.hidden = !saved.bookedAt;
   if (saved.bookedAt) when.textContent = fmtFull.format(new Date(saved.bookedAt));
-  $("#doneLinks").hidden = !saved.rescheduleUrl;
-  if (saved.rescheduleUrl) $("#doneReschedule").href = saved.rescheduleUrl;
 }
 
 // Listen to Calendly events (booking confirmed → update the sheet row)
