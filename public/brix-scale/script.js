@@ -340,6 +340,7 @@ function validateStep(n, show = true) {
 
 /* ---------- Progress (updates live as fields become valid) ---------- */
 function updateProgress() {
+  if (form.hidden) return; // booking/done screens set their own label
   const fields = ALL_FIELDS();
   const completed = fields.filter((f) => !validateField(f, false)).length;
   const pct = Math.round((completed / fields.length) * 100);
