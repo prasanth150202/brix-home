@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KKM9SQTC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>You're booked | BRIX</title>
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Same ?v= as ../index.html: bump both when styles.css changes. -->
+  <link rel="stylesheet" href="../styles.css?v=20261120-1" />
+  <style>
+    .thanks { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+    .thanks__main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px var(--gutter); }
+  </style>
+</head>
+<body>
+  <div class="thanks">
+    <div class="apply__top">
+      <div class="apply__bar">
+        <a class="logo logo--sm" href="../" aria-label="BRIX home">
+          <img src="../assets/brix-logo-dark.png" alt="BRIX" width="2279" height="496" />
+        </a>
+      </div>
+    </div>
+
+    <main class="thanks__main">
+      <section class="done" aria-labelledby="doneTitle">
+        <div class="done__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </div>
+        <h1 class="booking__title" id="doneTitle">You're booked<span id="thanksName"></span>.</h1>
+        <p class="booking__sub">Check your inbox for the calendar invite. See you on the call.</p>
+        <a class="btn btn--dark" href="../">Back to the site</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Greet by first name when the visitor just booked on /brix-scale/ (same tab, so sessionStorage has it).
+    try {
+      var lead = JSON.parse(sessionStorage.getItem("brix_lead") || "null");
+      var first = lead && lead.fullName ? String(lead.fullName).trim().split(/\s+/)[0] : "";
+      if (first) {
+        document.getElementById("thanksName").textContent = ", " + first.charAt(0).toUpperCase() + first.slice(1);
+      }
+    } catch (e) { /* storage blocked: the generic heading is fine */ }
+  </script>
+</body>
+</html>

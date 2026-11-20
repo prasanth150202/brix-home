@@ -740,8 +740,17 @@ function markBooked(lead, { start, eventUri = "", inviteeUri = "", rescheduleUrl
     eventUri,
     inviteeUri,
   }).catch((err) => console.error("[BRIX] Could not mark booking:", err));
-  if (window.dataLayer) window.dataLayer.push({ event: "brix_call_booked" });
-  showDone();
+  // Go to /brix-scale/thank-you/ once GTM has the event (or after 1s if GTM is slow or blocked).
+  let left = false;
+  const goToThankYou = () => {
+    if (left) return;
+    left = true;
+    location.assign(new URL("thank-you/", location.href).href);
+  };
+  if (window.dataLayer) {
+    window.dataLayer.push({ event: "brix_call_booked", eventCallback: goToThankYou, eventTimeout: 1000 });
+  }
+  setTimeout(goToThankYou, 1000);
 }
 
 /* ---------- Calendly calendar (fallback) ---------- */
@@ -801,10 +810,6 @@ function showDone() {
   booking.hidden = true;
   done.hidden = false;
   setBookingProgress("All done ✓ · You're booked");
-  const saved = storage.get(LEAD_KEY) || {};
-  const when = $("#doneWhen");
-  when.hidden = !saved.bookedAt;
-  if (saved.bookedAt) when.textContent = fmtFull.format(new Date(saved.bookedAt));
 }
 
 // Listen to Calendly events (booking confirmed → update the sheet row)
