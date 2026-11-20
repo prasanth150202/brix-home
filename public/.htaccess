@@ -6,9 +6,10 @@ DirectoryIndex index.php
     # If the site lives in a subfolder, set it here, e.g. RewriteBase /brix-ai/
     # RewriteBase /
 
-    # The BRIX Scale page (public/brix-scale/) needs its trailing slash so its
-    # relative links resolve.
+    # The BRIX Scale page (public/brix-scale/) and its thank-you page need their
+    # trailing slash so their relative links resolve.
     RewriteRule ^brix-scale$ /brix-scale/ [R=301,L]
+    RewriteRule ^brix-scale/thank-you$ /brix-scale/thank-you/ [R=301,L]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
