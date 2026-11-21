@@ -50,6 +50,9 @@ $products = active_products();
   </div>
   <div class="container footer-bottom">
     <p class="footer-copy">&copy; <?= date('Y') ?> <img src="<?= e(url('assets/img/digifyce-mark.png')) ?>" alt="" width="225" height="258" loading="lazy"> DIGIFYCE GLOBAL (OPC) PRIVATE LIMITED. All rights reserved.</p>
+    <nav class="footer-legal" aria-label="Policies">
+      <a href="<?= e(url('/privacy-policy')) ?>">Privacy Policy</a>
+    </nav>
     <?php if ($socials): ?>
     <div class="socials">
       <?php foreach ($socials as $iconName => $link): ?>
