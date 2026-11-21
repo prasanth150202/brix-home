@@ -197,10 +197,20 @@ function fillCountryOptions() {
   phoneCountry.innerHTML = `<optgroup label="Popular">${popular}</optgroup><optgroup label="All countries">${all}</optgroup>`;
 }
 
+// Example mobile numbers in each country's own format, shown as the placeholder and in error messages
+const PHONE_EXAMPLES = {
+  US: "(201) 555-0123", CA: "(506) 234-5678", GB: "07400 123456", AU: "0412 345 678", NZ: "021 123 4567",
+  IN: "98765 43210", AE: "050 123 4567", SG: "8123 4567", SA: "051 234 5678", IE: "085 012 3456",
+  DE: "01512 3456789", FR: "06 12 34 56 78", NL: "06 12345678", ES: "612 34 56 78", IT: "312 345 6789",
+  ZA: "071 123 4567", PK: "0301 2345678", BD: "01812-345678", PH: "0905 123 4567", MY: "012-345 6789",
+};
+const phoneExample = (iso) => PHONE_EXAMPLES[iso] || "Your mobile number";
+
 function setCountry(iso) {
   const c = COUNTRY_BY_ISO[iso] || COUNTRY_BY_ISO.IN;
   phoneCountry.value = c.iso;
   phoneCcLabel.textContent = `${c.iso} +${c.dial}`;
+  phoneInput.placeholder = phoneExample(c.iso);
 }
 
 // If someone types or pastes a full international number ("+44 7911 123456"), pick the country for them
@@ -286,7 +296,7 @@ let calendlyMounted = false;
 const validators = {
   fullName: (v) => {
     v = v.trim();
-    if (!v) return "Please enter your full name.";
+    if (!v) return "Please enter your first name.";
     if (v.length < 2 || !/[a-zA-ZÀ-ɏऀ-෿]/.test(v)) return "That doesn't look like a name.";
     return "";
   },
@@ -298,13 +308,22 @@ const validators = {
   },
   phone: (v) => {
     v = v.trim();
-    if (!v) return "Please enter your phone number.";
+    if (!v) return "Please enter your WhatsApp number. We'll send your call link there.";
     if (!/^[+\d\s().-]+$/.test(v)) return "Use digits only. Spaces, brackets and dashes are fine.";
     const result = checkPhone();
-    if (!result.ok) return `That isn't a valid ${result.country.name} mobile number. Check the number and the country code.`;
+    if (!result.ok) {
+      const ex = PHONE_EXAMPLES[result.country.iso];
+      return `That doesn't look like a ${result.country.name} mobile number${ex ? ` (e.g. ${ex})` : ""}. Check the number and the country code.`;
+    }
     return "";
   },
-  agencyName: (v) => (v.trim().length < 2 ? "Please enter your agency name." : ""),
+  // Field is still called agencyName (keeps the Google Sheet + booking API unchanged) but now holds the agency website
+  agencyName: (v) => {
+    v = v.trim();
+    if (!v) return "Please enter your agency's website.";
+    if (!/^(https?:\/\/)?(www\.)?[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}(\/\S*)?$/i.test(v)) return "Please enter a website, like youragency.com.";
+    return "";
+  },
   clients: (v) => {
     if (!v) return "Please choose an option.";
     if (v === "Other" && !otherInput.value.trim()) return "Please tell us a bit more.";
