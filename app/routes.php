@@ -18,6 +18,7 @@ route('GET', '/blog/tag/{slug}', 'site_blog_tag');
 route('GET', '/blog/{slug}', 'site_post');
 route('GET', '/sitemap.xml', 'site_sitemap');
 route('GET', '/robots.txt', 'site_robots');
+route('GET', '/privacy-policy', 'site_privacy_policy');
 route('POST', '/api/chat', 'api_chat');
 route('POST', '/api/track', 'api_track');
 

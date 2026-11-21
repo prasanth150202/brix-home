@@ -126,6 +126,7 @@
 
 /* ---------- Privacy note under the form ---------- */
 .v2-privacy { display: flex; gap: 8px; align-items: flex-start; margin-top: 18px; font-size: 13px; color: var(--grey); line-height: 1.5; }
+.v2-privacy a, .v2-footer a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .v2-privacy svg { width: 16px; height: 16px; flex: none; fill: var(--grey); margin-top: 2px; }
 
 /* ---------- FAQ ---------- */

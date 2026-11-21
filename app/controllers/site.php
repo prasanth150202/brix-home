@@ -48,6 +48,16 @@ function site_page(string $path): void
     ]);
 }
 
+function site_privacy_policy(): void
+{
+    render('site/privacy-policy', [
+        'meta' => page_meta([
+            'title'       => 'Privacy Policy',
+            'description' => 'How BRIX collects, uses, shares and protects personal information on our website, in our Partner Program and in our Shopify apps.',
+        ]),
+    ]);
+}
+
 function site_blog(): void
 {
     blog_listing([], ['heading' => 'The BRIX blog', 'intro' => 'Practical guides and real case studies on growing a Shopify store.']);
@@ -136,7 +146,7 @@ function site_post(string $slug): void
 function site_sitemap(): void
 {
     header('Content-Type: application/xml; charset=utf-8');
-    $urls = [['loc' => absolute_url('/'), 'lastmod' => null], ['loc' => absolute_url('/blog'), 'lastmod' => null]];
+    $urls = [['loc' => absolute_url('/'), 'lastmod' => null], ['loc' => absolute_url('/blog'), 'lastmod' => null], ['loc' => absolute_url('/privacy-policy'), 'lastmod' => '2026-11-21']];
     foreach (db_all("SELECT slug, updated_at, published_at FROM pages WHERE status = 'published' AND noindex = 0") as $p) {
         $urls[] = ['loc' => absolute_url('/' . $p['slug']), 'lastmod' => $p['updated_at'] ?: $p['published_at']];
     }

@@ -42,6 +42,7 @@ $products = active_products();
         <?php foreach (nav_pages('footer') as $footerPage): ?>
           <li><a href="<?= e(page_url($footerPage)) ?>"><?= e($footerPage['title']) ?></a></li>
         <?php endforeach; ?>
+        <li><a href="<?= e(url('/privacy-policy')) ?>">Privacy Policy</a></li>
         <?php if (setting('demo_url')): ?><li><a href="<?= e(setting('demo_url')) ?>" target="_blank" rel="noopener">Book a demo</a></li><?php endif; ?>
         <?php if (setting('contact_email')): ?><li><a href="mailto:<?= e(setting('contact_email')) ?>"><?= e(setting('contact_email')) ?></a></li><?php endif; ?>
       </ul>
